@@ -3,7 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from dotenv import load_dotenv
 import os, json
 
-# API Daten
+# API Daten vom env
 load_dotenv()
 APP_ID  = os.getenv("ALGOLIA_APP_ID")
 API_KEY = os.getenv("ALGOLIA_ANALYTICS_KEY")
@@ -12,7 +12,7 @@ INDEX   = os.getenv("INDEX_NAME")
 
 client = AnalyticsClientSync(APP_ID, API_KEY, REGION)
 
-# Apis conected
+# Search Metrics connected
 def get_top_searches():
     resp = client.get_top_searches(index=INDEX, click_analytics=True)
     return resp.to_dict()
@@ -29,12 +29,24 @@ def get_no_result_rate():
     resp = client.get_no_results_rate(index=INDEX)
     return resp.to_dict()
 
+def get_top_hits():
+    resp = client.get_top_hits(index=INDEX)
+    return resp.to_dict()
+
+# Clicks Metrics connected
+def  get_searches_no_clicks():
+    resp =  client.get_searches_no_clicks(index=INDEX)
+    return resp.to_dict()
+
+
 # Endpoints for index page
 ENDPOINTS = [
     ("/top",        "Top Searches"),
     ("/count",      "Search Count"),
     ("/noresults",  "Searches Without Results"),
-    ("/norate",     "No-Result Rate")
+    ("/norate",     "No-Result Rate"),
+    ("/hits",       "Top Hits"),
+    ("/noclicks",   "Searches No Clicks")
 ]
 
 class Handler(BaseHTTPRequestHandler):
@@ -77,7 +89,6 @@ class Handler(BaseHTTPRequestHandler):
         </html>
         """
 
-
     def do_GET(self):
         route = self.path.rstrip("/")
         if route == "":
@@ -90,6 +101,10 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json(get_searches_no_results()); return
         if route == "/norate":
             self._send_json(get_no_result_rate()); return
+        if route == "/hits":
+            self._send_json(get_top_hits()); return
+        if route == "/noclicks":
+            self._send_json(get_searches_no_clicks()); return
         self.send_error(404, "Endpoint not found")
 
 def main():
