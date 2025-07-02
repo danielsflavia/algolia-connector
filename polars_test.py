@@ -1,7 +1,7 @@
 import json, polars as pl
 from algolia_connector import get_top_searches, get_top_searches_schema, get_searches_count, get_searches_count_schema, get_users_count, get_users_count_schema, get_top_countries, get_top_countries_schema
 
-# Polars data types mapping
+# Polars data types mapping (Python -> Polars)
 TYPE_MAP = {
     "string":  pl.String,
     "integer": pl.Int64,
