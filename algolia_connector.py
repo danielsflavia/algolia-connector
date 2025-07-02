@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os, json
 import polars as pl
 
-# API Daten vom env
+# API Data from .env
 load_dotenv()
 APP_ID  = os.getenv("ALGOLIA_APP_ID")
 API_KEY = os.getenv("ALGOLIA_ANALYTICS_KEY")
@@ -48,7 +48,7 @@ def get_top_countries():
     resp = client.get_top_countries(index=INDEX)
     return resp.to_dict()
 
-# Schema function und Datentyp erkennung
+# Data Types and Schema function
 def _dtype(value):
     if isinstance(value, bool):   return "boolean"
     if isinstance(value, int):    return "integer"
@@ -66,7 +66,7 @@ def schema_from_rows(rows):
         ]
     }
 
-    # create schemas
+    # create schemas for each connector
 def get_top_searches_schema():
     return schema_from_rows(get_top_searches().get("searches", []))
 
@@ -126,7 +126,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(html.encode())
 
-    #Index page mit links
+    # Index page with links
     def _index(self):
         links = "\n".join(
             f'<a class="btn" href="{url}">{label}</a>' for url, label in ENDPOINTS
