@@ -39,6 +39,14 @@ def  get_searches_no_clicks():
     resp =  client.get_searches_no_clicks(index=INDEX)
     return resp.to_dict()
 
+# Users Metrics connected
+def get_users_count():
+    resp = client.get_users_count(index=INDEX)
+    return resp.to_dict()
+
+def get_top_countries():
+    resp = client.get_top_countries(index=INDEX)
+    return resp.to_dict()
 
 # Schema function und Datentyp erkennung
 def _dtype(value):
@@ -77,6 +85,12 @@ def get_top_hits_schema():
 def get_searches_no_clicks_schema():
     return schema_from_rows(get_searches_no_clicks().get("searches", []))
 
+def get_users_count_schema():
+    return schema_from_rows(get_users_count().get("dates", []))
+
+def get_top_countries_schema():
+    return schema_from_rows(get_top_countries().get("countries", []))
+
 
 # Endpoints for index page
 ENDPOINTS = [
@@ -91,7 +105,11 @@ ENDPOINTS = [
     ("/hits",        "Top Hits"),
     ("/hits/schema", "Top Hits (Schema)"),
     ("/noclicks",    "No Clicks"),
-    ("/noclicks/schema", "No Clicks (Schema)")
+    ("/noclicks/schema", "No Clicks (Schema)"),
+    ("/userscount",     "Number of Users"),
+    ("/userscount/schema",  "Number of Uasers (Schema)"),
+    ("/countries",  "Top Countries"),
+    ("/countries/schema",   "Top Countries (Schema)")
 ]
 
 
@@ -165,6 +183,14 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json(get_searches_no_clicks())
             case "/noclicks/schema":
                 self._send_json(get_searches_no_clicks_schema())
+            case "/userscount":
+                self._send_json(get_users_count())
+            case "/userscount/schema":
+                self._send_json(get_users_count_schema())
+            case "/countries":
+                self._send_json(get_top_countries())
+            case "/countries/schema":
+                self._send_json(get_top_countries_schema())
             case _:
                 self.send_error(404, "Endpoint not found")
 
