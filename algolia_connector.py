@@ -39,14 +39,57 @@ def  get_searches_no_clicks():
     return resp.to_dict()
 
 
+# Schema functions und Datentyp erkennung
+def _dtype(value):
+    if isinstance(value, bool):   return "boolean"
+    if isinstance(value, int):    return "integer"
+    if isinstance(value, float):  return "float"
+    return "string" 
+
+def schema_from_rows(rows):
+    if not rows:                       
+        return {"columns": []}
+    first = rows[0]                    
+    return {
+        "columns": [
+            {"name": k, "dataType": _dtype(v)}
+            for k, v in first.items()
+        ]
+    }
+
+def get_top_searches_schema():
+    return schema_from_rows(get_top_searches().get("searches", []))
+
+def get_searches_count_schema():
+    return schema_from_rows(get_searches_count().get("dates", []))
+
+def get_searches_no_results_schema():
+    return schema_from_rows(get_searches_no_results().get("searches", []))
+
+def get_no_result_rate_schema():
+    return schema_from_rows(get_no_result_rate().get("dates", []))
+
+def get_top_hits_schema():
+    return schema_from_rows(get_top_hits().get("hits", []))
+
+def get_searches_no_clicks_schema():
+    return schema_from_rows(get_searches_no_clicks().get("searches", []))
+
+
 # Endpoints for index page
 ENDPOINTS = [
-    ("/top",        "Top Searches"),
-    ("/count",      "Search Count"),
-    ("/noresults",  "Searches Without Results"),
-    ("/norate",     "No-Result Rate"),
-    ("/hits",       "Top Hits"),
-    ("/noclicks",   "Searches No Clicks")
+    ("/top",         "Top Searches"),
+    ("/top/schema",  "Top Searches (Schema)"),
+    ("/count",       "Search Count"),
+    ("/count/schema",    "Search Count (Schema)"),
+    ("/noresults",   "No Results"),
+    ("/noresults/schema", "No Results (Schema)"),
+    ("/norate",      "No Result Rate"),
+    ("norate/schema",   "No Result Rate (Schema)"),
+    ("/hits",        "Top Hits"),
+    ("/hits/schema", "Top Hits (Schema)"),
+    ("/noclicks",    "No Clicks"),
+    ("/noclicks/schema", "No Clicks (Schema)")
 ]
 
 class Handler(BaseHTTPRequestHandler):
@@ -91,21 +134,35 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         route = self.path.rstrip("/")
-        if route == "":
-            self._send_html(self._index()); return
-        if route == "/top":
-            self._send_json(get_top_searches());  return
-        if route == "/count":
-            self._send_json(get_searches_count()); return
-        if route == "/noresults":
-            self._send_json(get_searches_no_results()); return
-        if route == "/norate":
-            self._send_json(get_no_result_rate()); return
-        if route == "/hits":
-            self._send_json(get_top_hits()); return
-        if route == "/noclicks":
-            self._send_json(get_searches_no_clicks()); return
-        self.send_error(404, "Endpoint not found")
+        match route:
+            case "":
+                self._send_html(self._index())
+            case "/top":
+                self._send_json(get_top_searches())
+            case "/top/schema":
+                self._send_json(get_top_searches_schema())
+            case "/count":
+                self._send_json(get_searches_count())
+            case "/count/schema":
+                self._send_json(get_searches_count_schema())
+            case "/noresults":
+                self._send_json(get_searches_no_results())
+            case "/noresults/schema":
+                self._send_json(get_searches_no_results_schema())
+            case "/norate":
+                self._send_json(get_no_result_rate())
+            case "/norate/schema":
+                self._send_json(get_no_result_rate_schema())
+            case "/hits":
+                self._send_json(get_top_hits())
+            case "/hits/schema":
+                self._send_json(get_top_hits_schema())
+            case "/noclicks":
+                self._send_json(get_searches_no_clicks())
+            case "/noclicks/schema":
+                self._send_json(get_searches_no_clicks_schema())
+            case _:
+                self.send_error(404, "Endpoint not found")
 
 def main():
     HTTPServer(("localhost", 8000), Handler).serve_forever()
