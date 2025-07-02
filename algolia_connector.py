@@ -2,6 +2,7 @@ from algoliasearch.analytics.client import AnalyticsClientSync
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from dotenv import load_dotenv
 import os, json
+import polars as pl
 
 # API Daten vom env
 load_dotenv()
@@ -39,7 +40,7 @@ def  get_searches_no_clicks():
     return resp.to_dict()
 
 
-# Schema functions und Datentyp erkennung
+# Schema function und Datentyp erkennung
 def _dtype(value):
     if isinstance(value, bool):   return "boolean"
     if isinstance(value, int):    return "integer"
@@ -57,6 +58,7 @@ def schema_from_rows(rows):
         ]
     }
 
+    # create schemas
 def get_top_searches_schema():
     return schema_from_rows(get_top_searches().get("searches", []))
 
@@ -85,12 +87,13 @@ ENDPOINTS = [
     ("/noresults",   "No Results"),
     ("/noresults/schema", "No Results (Schema)"),
     ("/norate",      "No Result Rate"),
-    ("norate/schema",   "No Result Rate (Schema)"),
+    ("/norate/schema",   "No Result Rate (Schema)"),
     ("/hits",        "Top Hits"),
     ("/hits/schema", "Top Hits (Schema)"),
     ("/noclicks",    "No Clicks"),
     ("/noclicks/schema", "No Clicks (Schema)")
 ]
+
 
 class Handler(BaseHTTPRequestHandler):
     def _send_json(self, obj):
@@ -105,6 +108,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(html.encode())
 
+    #Index page mit links
     def _index(self):
         links = "\n".join(
             f'<a class="btn" href="{url}">{label}</a>' for url, label in ENDPOINTS
