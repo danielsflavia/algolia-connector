@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from dotenv import load_dotenv
 import os, json
 
+
 # API Data from .env
 load_dotenv()
 APP_ID  = os.getenv("ALGOLIA_APP_ID")
@@ -38,6 +39,10 @@ def  get_searches_no_clicks():
     resp =  client.get_searches_no_clicks(index=INDEX)
     return resp.to_dict()
 
+def get_click_positions():
+    resp = client.get_click_positions(index=INDEX)
+    return resp.to_dict()
+
 # Users Metrics connected
 def get_users_count():
     resp = client.get_users_count(index=INDEX)
@@ -52,7 +57,8 @@ def _dtype(value):
     if isinstance(value, bool):   return "boolean"
     if isinstance(value, int):    return "integer"
     if isinstance(value, float):  return "float"
-    return "string" 
+    if isinstance(value, str):
+        return "string" 
 
 def schema_from_rows(rows):
     if not rows:                       
@@ -90,6 +96,9 @@ def get_users_count_schema():
 def get_top_countries_schema():
     return schema_from_rows(get_top_countries().get("countries", []))
 
+def get_click_positions_schema():
+    return schema_from_rows(get_click_positions().get("positions", []))
+
 
 # Endpoints for index page
 ENDPOINTS = [
@@ -105,8 +114,10 @@ ENDPOINTS = [
     ("/hits/schema", "Top Hits (Schema)"),
     ("/noclicks",    "No Clicks"),
     ("/noclicks/schema", "No Clicks (Schema)"),
+    ("/clickposition",    "Click Position"),
+    ("/clickposition/schema",    "Click position (Schema)"),
     ("/userscount",     "Number of Users"),
-    ("/userscount/schema",  "Number of Uasers (Schema)"),
+    ("/userscount/schema",  "Number of Users (Schema)"),
     ("/countries",  "Top Countries"),
     ("/countries/schema",   "Top Countries (Schema)")
 ]
@@ -182,6 +193,10 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json(get_searches_no_clicks())
             case "/noclicks/schema":
                 self._send_json(get_searches_no_clicks_schema())
+            case "/clickposition":
+                self._send_json(get_click_positions())
+            case "/clickposition/schema":
+                self._send_json(get_click_positions_schema())
             case "/userscount":
                 self._send_json(get_users_count())
             case "/userscount/schema":

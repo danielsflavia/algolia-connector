@@ -46,6 +46,7 @@ print("\nSearches Count: ")
 print(df_searches_count)
     # Max serch count
 print("\nHighest Search Count in a day:", df_searches_count["count"].max())
+print("\nTotal Searches:", df_searches_count["count"].sum())
 
 # Searches no result
 searches_no_results_rows = get_searches_no_results()["searches"]
@@ -79,6 +80,28 @@ searches_no_clicks_schema = get_searches_no_clicks_schema()["columns"]
 df_searches_no_clicks = build_df(searches_no_clicks_rows, searches_no_clicks_schema)
 print("\nSearches no clicks: ")
 print(df_searches_no_clicks)
+
+# Click position
+click_positions_rows = get_click_positions()["positions"]
+click_positions_schema = get_click_positions_schema()["columns"]
+df_click_positions = build_df(click_positions_rows, click_positions_schema)
+print("\nClick positions: ")
+print(df_click_positions)
+    # Average click positions (convert from json string to list)
+df = (
+    df_click_positions
+    .with_columns(
+        pl.col("position").str.json_decode().alias("pos_list")
+    )
+    .with_columns([
+        pl.col("pos_list").list.get(0).alias("pos_start"),
+        pl.col("pos_list").list.get(1).alias("pos_end"),
+        ((pl.col("pos_list").list.get(0) + pl.col("pos_list").list.get(1)) / 2).alias("pos_mean")
+    ])
+)
+df_nonzero = df.filter(pl.col("clickCount") > 0)    # just positions that were clicked
+average_position = ((df_nonzero["pos_mean"] * df_nonzero["clickCount"]).sum()/ df_nonzero["clickCount"].sum())
+print("Average click position: ", average_position)
 
 # Users count
 users_count_rows = get_users_count()["dates"]
