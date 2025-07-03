@@ -101,7 +101,10 @@ df = (
 )
 df_nonzero = df.filter(pl.col("clickCount") > 0)    # just positions that were clicked
 average_position = ((df_nonzero["pos_mean"] * df_nonzero["clickCount"]).sum()/ df_nonzero["clickCount"].sum())
-print("Average click position: ", average_position)
+print("\nAverage click position: ", average_position)
+    # Percentage of all clicks position
+total = df_nonzero["clickCount"].sum()
+print("\nPercentage of click position: ", df_nonzero.with_columns((pl.col("clickCount")/total*100).alias("percentage")).select(["clickCount", "pos_mean", "percentage"]))
 
 # Users count
 users_count_rows = get_users_count()["dates"]
