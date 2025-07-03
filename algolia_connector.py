@@ -2,7 +2,6 @@ from algoliasearch.analytics.client import AnalyticsClientSync
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from dotenv import load_dotenv
 import os, json
-import polars as pl
 
 # API Data from .env
 load_dotenv()

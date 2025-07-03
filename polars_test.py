@@ -35,7 +35,7 @@ top_searches_schema = get_top_searches_schema()["columns"]
 df_top_searches = build_df(top_searches_rows, top_searches_schema)
 print("\nTop Searches: ")
 print(df_top_searches)
-    # Filter and analyse
+    # Top search
 print("\nTop Search:", df_top_searches.sort("count", descending=True)[0, :])
 
 # Searches count
@@ -44,7 +44,7 @@ serches_count_schema = get_searches_count_schema()['columns']
 df_searches_count = build_df(searches_count_rows, serches_count_schema)
 print("\nSearches Count: ")
 print(df_searches_count)
-    # Filter and analyse
+    # Max serch count
 print("\nHighest Search Count in a day:", df_searches_count["count"].max())
 
 # Searches no result
@@ -53,6 +53,8 @@ searches_no_results_schema = get_searches_no_results_schema()["columns"]
 df_searches_no_results = build_df(searches_no_results_rows, searches_no_results_schema)
 print("\nSearches no results: ")
 print(df_searches_no_results)
+    # Top 10 searches result
+print("\nTop 10 searches no result: ", df_searches_no_results.sort("count", descending=True).head(10))
 
 # No result rate
 no_result_rate_rows = get_no_result_rate()["dates"]
@@ -60,12 +62,23 @@ no_result_rate_schema = get_no_result_rate_schema()["columns"]
 df_no_result_rate = build_df(no_result_rate_rows, no_result_rate_schema)
 print("\nNo result rate: ")
 print(df_no_result_rate)
+    # Days with >10% No-Result-Rate
+threshold = 0.10
+print("\n>10% No-Result-Rate: ", df_no_result_rate.filter(pl.col("rate") > threshold).sort("rate", descending = True))
 
 # Top hits
-###
+top_hits_rows = get_top_hits()["hits"]
+top_hits_schema = get_top_hits_schema()["columns"]
+df_top_hits = build_df(top_hits_rows, top_hits_schema)
+print("\nTop hits: ")
+print(df_top_hits)
 
 # Searches no clicks
-###
+searches_no_clicks_rows = get_searches_no_clicks()["searches"]
+searches_no_clicks_schema = get_searches_no_clicks_schema()["columns"]
+df_searches_no_clicks = build_df(searches_no_clicks_rows, searches_no_clicks_schema)
+print("\nSearches no clicks: ")
+print(df_searches_no_clicks)
 
 # Users count
 users_count_rows = get_users_count()["dates"]
@@ -73,8 +86,10 @@ users_count_schema = get_users_count_schema()["columns"]
 df_users_count = build_df(users_count_rows, users_count_schema)
 print("\nNumber of Users: ")
 print(df_users_count)
-    # Filter and analyse
+    # Sum of users
 print("\nTotal Users: ", df_users_count["count"].sum())
+    # Rolling mean last 7 days of user count
+print("Moving average last 7 days of user count: ", df_users_count.with_columns(pl.col("count").rolling_mean(window_size=7).alias("moving_average")))
 
 # Top countries
 top_countries_rows = get_top_countries()["countries"]
@@ -82,4 +97,9 @@ top_countries_schema = get_top_countries_schema()["columns"]
 df_top_countries = build_df(top_countries_rows, top_countries_schema)
 print("\nTop countries: ")
 print(df_top_countries)
+    # Percentage per country
+total = df_top_countries["count"].sum()
+print("Percentage per Country: ", df_top_countries
+      .with_columns((pl.col("count")/total*100).round(2).alias("country_pecentage"))
+      .sort("country_pecentage", descending = True))
 
