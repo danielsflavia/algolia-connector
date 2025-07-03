@@ -194,7 +194,13 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_error(404, "Endpoint not found")
 
 def main():
-    HTTPServer(("localhost", 8000), Handler).serve_forever()
+    server = HTTPServer(("localhost", 8000), Handler)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nServer wurde per Strg+C gestoppt")
+    finally:
+        server.server_close()   # Port ist frei
 
 if __name__ == "__main__":
     main()
