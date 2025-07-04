@@ -43,6 +43,10 @@ def get_click_positions():
     resp = client.get_click_positions(index=INDEX)
     return resp.to_dict()
 
+def get_click_through_rate():
+    resp = client.get_click_through_rate(index=INDEX)
+    return resp.to_dict()
+
 # Users Metrics connected
 def get_users_count():
     resp = client.get_users_count(index=INDEX)
@@ -56,6 +60,7 @@ def get_top_countries():
 def get_top_filter_for_attributes():
     resp = client.get_top_filter_attributes(index=INDEX)
     return resp.to_dict()
+
 
 
 # Data Types and Schema function
@@ -96,6 +101,9 @@ def get_top_hits_schema():
 def get_searches_no_clicks_schema():
     return schema_from_rows(get_searches_no_clicks().get("searches", []))
 
+def get_click_through_rate_schema():
+    return schema_from_rows(get_click_through_rate().get("dates", []))
+
 def get_users_count_schema():
     return schema_from_rows(get_users_count().get("dates", []))
 
@@ -111,26 +119,28 @@ def get_top_filter_for_attributes_schema():
 
 # Endpoints for index page
 ENDPOINTS = [
-    ("/top",         "Top Searches"),
-    ("/top/schema",  "Top Searches (Schema)"),
-    ("/count",       "Search Count"),
-    ("/count/schema",    "Search Count (Schema)"),
-    ("/noresults",   "No Results"),
-    ("/noresults/schema", "No Results (Schema)"),
-    ("/norate",      "No Result Rate"),
-    ("/norate/schema",   "No Result Rate (Schema)"),
-    ("/hits",        "Top Hits"),
-    ("/hits/schema", "Top Hits (Schema)"),
-    ("/noclicks",    "No Clicks"),
-    ("/noclicks/schema", "No Clicks (Schema)"),
-    ("/clickposition",    "Click Position"),
-    ("/clickposition/schema",    "Click position (Schema)"),
-    ("/userscount",     "Number of Users"),
-    ("/userscount/schema",  "Number of Users (Schema)"),
-    ("/countries",  "Top Countries"),
-    ("/countries/schema",   "Top Countries (Schema)"),
-    ("/filter",     "Top filter attributes"),
-    ("/filter/schema",     "Top filter attributes (Schema)")
+    ("/top",                      "Top Searches"),
+    ("/top/schema",               "Top Searches (Schema)"),
+    ("/count",                     "Search Count"),
+    ("/count/schema",              "Search Count (Schema)"),
+    ("/noresults",                 "No Results"),
+    ("/noresults/schema",          "No Results (Schema)"),
+    ("/norate",                    "No Result Rate"),
+    ("/norate/schema",             "No Result Rate (Schema)"),
+    ("/hits",                      "Top Hits"),
+    ("/hits/schema",               "Top Hits (Schema)"),
+    ("/noclicks",                  "No Clicks"),
+    ("/noclicks/schema",           "No Clicks (Schema)"),
+    ("/clickposition",             "Click Position"),
+    ("/clickposition/schema",      "Click position (Schema)"),
+    ("/clickthroughrate",          "Click Through Rate"),
+    ("/clickthroughrate/schema",   "Click Through Rate (Schema)"),
+    ("/userscount",                "Number of Users"),
+    ("/userscount/schema",         "Number of Users (Schema)"),
+    ("/countries",                 "Top Countries"),
+    ("/countries/schema",          "Top Countries (Schema)"),
+    ("/filter",                    "Top Filter Attributes"),
+    ("/filter/schema",             "Top Filter Attributes (Schema)")
 ]
 
 
@@ -208,6 +218,10 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json(get_click_positions())
             case "/clickposition/schema":
                 self._send_json(get_click_positions_schema())
+            case "/clickthroughrate":
+                self._send_json(get_click_through_rate())
+            case "/clickthroughrate/schema":
+                self._send_json(get_click_through_rate_schema())
             case "/userscount":
                 self._send_json(get_users_count())
             case "/userscount/schema":
@@ -230,7 +244,7 @@ def main():
     except KeyboardInterrupt:
         print("\nServer wurde per Strg+C gestoppt")
     finally:
-        server.server_close()   # Port ist frei
+        server.server_close()   # Port gets free
 
 if __name__ == "__main__":
     main()

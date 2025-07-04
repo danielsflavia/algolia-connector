@@ -122,6 +122,12 @@ searches_total = df_searches_count["count"].sum()
 ctr = clicks_total / searches_total
 print(f"\nClick-through-rate: {ctr*100:.2f}%") 
 
+# Click through rate table
+click_through_rate_rows = get_click_through_rate()["dates"]
+click_through_rate_schema = get_click_through_rate_schema()["columns"]
+df_ctr = build_df(click_through_rate_rows, click_through_rate_schema)
+print("\nGet click through rate table :", df_ctr)
+
 # Users count
 users_count_rows = get_users_count()["dates"]
 users_count_schema = get_users_count_schema()["columns"]
