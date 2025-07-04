@@ -44,7 +44,7 @@ serches_count_schema = get_searches_count_schema()['columns']
 df_searches_count = build_df(searches_count_rows, serches_count_schema)
 print("\nSearches Count: ")
 print(df_searches_count)
-    # Max serch count
+    # Max search count
 print("\nHighest Search Count in a day:", df_searches_count["count"].max())
 print("\nTotal Searches:", df_searches_count["count"].sum())
 
@@ -87,6 +87,11 @@ searches_no_clicks_schema = get_searches_no_clicks_schema()["columns"]
 df_searches_no_clicks = build_df(searches_no_clicks_rows, searches_no_clicks_schema)
 print("\nSearches no clicks: ")
 print(df_searches_no_clicks)
+    # no clicks rate
+total_no_clicks = df_searches_no_clicks["count"].sum()
+total_searches  = df_searches_count["count"].sum()
+no_click_rate   = round(total_no_clicks / total_searches * 100, 2)
+print(f"No-Clicks-Rate gesamt: {no_click_rate}%")     
 
 # Click position
 click_positions_rows = get_click_positions()["positions"]
@@ -111,13 +116,12 @@ average_position = ((df_nonzero["pos_mean"] * df_nonzero["clickCount"]).sum()/ d
 print("\nAverage click position: ", average_position)
     # Percentage of all clicks position
 total = df_nonzero["clickCount"].sum()
-print("\nPercentage of click position: ", df_nonzero.with_columns((pl.col("clickCount")/total*100).alias("percentage")).select(["clickCount", "pos_mean", "percentage"]))
+print("\nPercentage of click position: ", df_nonzero.with_columns((pl.col("clickCount")/total*100).alias("percentage")).select(["clickCount", "pos_mean", "percentage"])) 
+    # Click Through rate
 clicks_total = df_click_positions["clickCount"].sum()
 searches_total = df_searches_count["count"].sum()
 ctr = clicks_total / searches_total
-print("\nClick-through-rate: ", ctr)
-
-
+print(f"\nClick-through-rate: {ctr*100:.2f}%") 
 
 # Users count
 users_count_rows = get_users_count()["dates"]
