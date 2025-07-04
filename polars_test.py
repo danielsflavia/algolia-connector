@@ -61,8 +61,15 @@ print("\nTop 10 searches no result: ", df_searches_no_results.sort("count", desc
 no_result_rate_rows = get_no_result_rate()["dates"]
 no_result_rate_schema = get_no_result_rate_schema()["columns"]
 df_no_result_rate = build_df(no_result_rate_rows, no_result_rate_schema)
+df_no_result_rate = df_no_result_rate.filter(pl.col("count")>0) # Days with min. 1 search
+df_no_result_rate = df_no_result_rate.with_columns((pl.col("rate")*100).round(2).alias("rate_percentage"))
 print("\nNo result rate: ")
-print(df_no_result_rate)
+print(df_no_result_rate.select(["date", "noResultCount", "count", "rate_percentage"]))
+     # no result rate overall number
+total_searches = df_searches_count["count"].sum()
+total_no_results = df_no_result_rate["noResultCount"].sum()
+overall_nrr = round(total_no_results / total_searches * 100, 2)
+print(f"\nNo-Result-Rate: {overall_nrr}%")
     # Days with >10% No-Result-Rate
 threshold = 0.10
 print("\n>10% No-Result-Rate: ", df_no_result_rate.filter(pl.col("rate") > threshold).sort("rate", descending = True))
@@ -105,6 +112,12 @@ print("\nAverage click position: ", average_position)
     # Percentage of all clicks position
 total = df_nonzero["clickCount"].sum()
 print("\nPercentage of click position: ", df_nonzero.with_columns((pl.col("clickCount")/total*100).alias("percentage")).select(["clickCount", "pos_mean", "percentage"]))
+clicks_total = df_click_positions["clickCount"].sum()
+searches_total = df_searches_count["count"].sum()
+ctr = clicks_total / searches_total
+print("\nClick-through-rate: ", ctr)
+
+
 
 # Users count
 users_count_rows = get_users_count()["dates"]
