@@ -52,6 +52,12 @@ def get_top_countries():
     resp = client.get_top_countries(index=INDEX)
     return resp.to_dict()
 
+# Top filter for attribute
+def get_top_filter_for_attributes():
+    resp = client.get_top_filter_attributes(index=INDEX)
+    return resp.to_dict()
+
+
 # Data Types and Schema function
 def _dtype(value):
     if isinstance(value, bool):   return "boolean"
@@ -99,6 +105,9 @@ def get_top_countries_schema():
 def get_click_positions_schema():
     return schema_from_rows(get_click_positions().get("positions", []))
 
+def get_top_filter_for_attributes_schema():
+    return schema_from_rows(get_top_filter_for_attributes().get("attributes", []))
+
 
 # Endpoints for index page
 ENDPOINTS = [
@@ -119,7 +128,9 @@ ENDPOINTS = [
     ("/userscount",     "Number of Users"),
     ("/userscount/schema",  "Number of Users (Schema)"),
     ("/countries",  "Top Countries"),
-    ("/countries/schema",   "Top Countries (Schema)")
+    ("/countries/schema",   "Top Countries (Schema)"),
+    ("/filter",     "Top filter attributes"),
+    ("/filter/schema",     "Top filter attributes (Schema)")
 ]
 
 
@@ -205,6 +216,10 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json(get_top_countries())
             case "/countries/schema":
                 self._send_json(get_top_countries_schema())
+            case "/filter":
+                self._send_json(get_top_filter_for_attributes())
+            case "/filter/schema":
+                self._send_json(get_top_filter_for_attributes_schema())    
             case _:
                 self.send_error(404, "Endpoint not found")
 

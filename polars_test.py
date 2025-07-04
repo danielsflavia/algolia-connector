@@ -26,7 +26,6 @@ def build_df(rows, schema_cols):
     return pl.from_dicts(clean_rows(rows), schema=schema_to_polars(schema_cols))
 
 
-
 # ---- Pull data from algolia_connector ---
 
 # Top searches
@@ -91,7 +90,7 @@ print(df_searches_no_clicks)
 total_no_clicks = df_searches_no_clicks["count"].sum()
 total_searches  = df_searches_count["count"].sum()
 no_click_rate   = round(total_no_clicks / total_searches * 100, 2)
-print(f"No-Clicks-Rate gesamt: {no_click_rate}%")     
+print(f"No-Clicks-Rate: {no_click_rate}%")     
 
 # Click position
 click_positions_rows = get_click_positions()["positions"]
@@ -132,17 +131,24 @@ print(df_users_count)
     # Sum of users
 print("\nTotal Users: ", df_users_count["count"].sum())
     # Rolling mean last 7 days of user count
-print("Moving average last 7 days of user count: ", df_users_count.with_columns(pl.col("count").rolling_mean(window_size=7).alias("moving_average")))
+print("\nMoving average last 7 days of user count: ", df_users_count.with_columns(pl.col("count").rolling_mean(window_size=7).alias("moving_average")))
 
 # Top countries
 top_countries_rows = get_top_countries()["countries"]
 top_countries_schema = get_top_countries_schema()["columns"]
 df_top_countries = build_df(top_countries_rows, top_countries_schema)
-print("\nTop countries: ")
-print(df_top_countries)
+print("\nTop countries: ", df_top_countries)
     # Percentage per country
 total = df_top_countries["count"].sum()
-print("Percentage per Country: ", df_top_countries
+print("\nPercentage per Country: ", df_top_countries
       .with_columns((pl.col("count")/total*100).round(2).alias("country_pecentage"))
       .sort("country_pecentage", descending = True))
+
+# Top filter attribtues
+top_filter_attributes_rows = get_top_filter_for_attributes()["attributes"]
+top_filter_attributes_schema = get_top_filter_for_attributes_schema()["columns"]
+df_top_filter_attributes = build_df(top_filter_attributes_rows, top_filter_attributes_schema)
+print("\nTop filter attributes: ", df_top_filter_attributes.sort("count", descending= True))
+    # Percentage per filter attribute
+print(df_top_filter_attributes.with_columns((pl.col("count")/pl.col("count").sum()).round(2).alias("percentage")))
 
