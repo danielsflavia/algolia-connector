@@ -6,7 +6,7 @@ Returns the most clicked individual results across all tracked searches.
 Each hit represents a clicked search result, including its unique identifier and click count.
 
 The data for this metric can be retrieved using the `get_top_hits()` function  
-from [`algolia_connector.py`](../algolia_connector.py).
+from [`algolia_connector.py`](../../algolia_connector.py).
 
 ## Field Description
 
@@ -28,7 +28,7 @@ from [`algolia_connector.py`](../algolia_connector.py).
 }
 ```
 
-> Schema returned by `get_top_hits_schema()`,  defined in [`algolia_connector.py`](../algolia_connector.py).
+> Schema returned by `get_top_hits_schema()`,  defined in [`algolia_connector.py`](../../algolia_connector.py).
  
 ## How to Analyze
 

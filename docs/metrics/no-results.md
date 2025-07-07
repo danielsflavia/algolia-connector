@@ -31,7 +31,7 @@ from [`algolia_connector.py`](../../algolia_connector.py)
 }
 ```
 
-> Schema returned by `get_searches_no_results_schema()`, defined in [`algolia_connector.py`](../algolia_connector.py).
+> Schema returned by `get_searches_no_results_schema()`, defined in [`algolia_connector.py`](../../algolia_connector.py).
 
 ## How to Analyze
 

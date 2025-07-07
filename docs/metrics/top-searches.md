@@ -5,7 +5,7 @@
 Returns the most popular search queries for the selected time range.  
 
 The data for this metric can be retrieved using the `get_top_searches()` function  
-from [`algolia_connector.py`](../algolia_connector.py).
+from [`algolia_connector.py`](../../algolia_connector.py).
 
 ## Field description:
 
@@ -46,7 +46,7 @@ from [`algolia_connector.py`](../algolia_connector.py).
 }
 ```
 
-> Schema returned by `get_top_searches_schema()`, defined in [`algolia_connector.py`](../algolia_connector.py).
+> Schema returned by `get_top_searches_schema()`, defined in [`algolia_connector.py`](../../algolia_connector.py).
 
 
 ## How to Analyze

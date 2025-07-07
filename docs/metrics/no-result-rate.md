@@ -6,7 +6,7 @@ Returns the fraction of searches that didn’t return any results within a time 
 This metric helps identify search effectiveness and content gaps over time.
 
 The data for this metric can be retrieved using the `get_no_result_rate()` function  
-from [`algolia_connector.py`](../algolia_connector.py).
+from [`algolia_connector.py`](../../algolia_connector.py).
 
 ## Field Description
 
@@ -34,7 +34,7 @@ from [`algolia_connector.py`](../algolia_connector.py).
 }
 ```
 
-> Schema returned by `get_no_result_rate_schema()`, defined in [`algolia_connector.py`](../algolia_connector.py).
+> Schema returned by `get_no_result_rate_schema()`, defined in [`algolia_connector.py`](../../algolia_connector.py).
 
 ## How to Analyze
 

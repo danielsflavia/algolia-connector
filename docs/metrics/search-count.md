@@ -6,7 +6,7 @@ Returns the total number of searches per day over a selected time range.
 This is a **time series metric**, meaning each entry includes a specific date and the number of searches executed on that day.
 
 The data for this metric can be retrieved using the `get_searches_count()` function  
-from [`algolia_connector.py`](../algolia_connector.py).
+from [`algolia_connector.py`](../../algolia_connector.py).
 
 ## Field description
 
@@ -28,7 +28,7 @@ from [`algolia_connector.py`](../algolia_connector.py).
   ]
 }
 ```
-> Schema returned by `get_searches_count_schema()`, defined in [`algolia_connector.py`](../algolia_connector.py).
+> Schema returned by `get_searches_count_schema()`, defined in [`algolia_connector.py`](../../algolia_connector.py).
 
 ## How to Analyze
 
