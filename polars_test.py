@@ -7,13 +7,21 @@ TYPE_MAP = {
     "integer": pl.Int64,
     "float":   pl.Float64,
     "boolean": pl.Boolean,
-    "date":    pl.Date
+    "date":    pl.Date,
+    "json":         pl.String,        # bleibt JSON
+    "list<int>":    pl.List(pl.Int64),
+    "list<float>":  pl.List(pl.Float64),
+    "list<string>": pl.List(pl.String),
+    "list<mixed>":  pl.List   
 }
 
 # Converts data from list or dict values to JSON string for Polars compatibility
 def clean_rows(rows: list[dict]) -> list[dict]:
-    return [
-        {key: (json.dumps(value) if isinstance(value, (list, dict)) else value) for key, value in row.items()}
+     return [
+        {
+            key: (json.dumps(value) if isinstance(value, dict) else value)
+            for key, value in row.items()
+        }
         for row in rows
     ]
 
@@ -101,13 +109,10 @@ print(df_click_positions)
     # Average click positions (convert from json string to list)
 df = (
     df_click_positions
-    .with_columns(
-        pl.col("position").str.json_decode().alias("pos_list")
-    )
     .with_columns([
-        pl.col("pos_list").list.get(0).alias("pos_start"),
-        pl.col("pos_list").list.get(1).alias("pos_end"),
-        ((pl.col("pos_list").list.get(0) + pl.col("pos_list").list.get(1)) / 2).alias("pos_mean")
+        pl.col("position").list.get(0).alias("pos_start"),
+        pl.col("position").list.get(1).alias("pos_end"),
+        ((pl.col("position").list.get(0) + pl.col("position").list.get(1)) / 2).alias("pos_mean")
     ])
 )
 df_nonzero = df.filter(pl.col("clickCount") > 0)    # just positions that were clicked
@@ -156,5 +161,6 @@ top_filter_attributes_schema = get_top_filter_for_attributes_schema()["columns"]
 df_top_filter_attributes = build_df(top_filter_attributes_rows, top_filter_attributes_schema)
 print("\nTop filter attributes: ", df_top_filter_attributes.sort("count", descending= True))
     # Percentage per filter attribute
-print(df_top_filter_attributes.with_columns((pl.col("count")/pl.col("count").sum()).round(2).alias("percentage")))
+print("Percentage of Top filter Attributes: ")
+print(df_top_filter_attributes.with_columns(((pl.col("count")/pl.col("count").sum())*100).round(2).alias("percentage")))
 

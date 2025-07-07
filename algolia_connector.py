@@ -68,14 +68,45 @@ def _dtype(value):
     if isinstance(value, bool):   return "boolean"
     if isinstance(value, int):    return "integer"
     if isinstance(value, float):  return "float"
-    if isinstance(value, str):
-        return "string" 
+    if isinstance(value, str):    return "string" 
+    if isinstance(value, (list, tuple)):
+        if value and all(isinstance(x, int)   for x in value):
+            return "list<int>"
+        if value and all(isinstance(x, float) for x in value):
+            return "list<float>"
+        if value and all(isinstance(x, str)   for x in value):
+            return "list<string>"
+        return "list<mixed>"                
+    if isinstance(value, dict):
+        return "json"                     
+    return "unknown"
 
-def schema_from_rows(rows):
-    if not rows:                       
-        return {"columns": []}
-    first = rows[0]                    
+def _guess_primary_key(sample_row):
+    for cand in ("id", "objectID", "uid", "uuid", "pk"):
+        if cand in sample_row:
+            return cand
+    return None 
+
+def schema_from_rows(
+    rows: list[dict],
+    *,
+    table_name: str,
+    primary_key: str | None = None,
+):
+    if not rows:
+        return {
+            "tableName": table_name,
+            "primaryKey": primary_key,       
+            "columns": []
+        }
+
+    first = rows[0]
+    if primary_key is None:
+        primary_key = _guess_primary_key(first)
+
     return {
+        "tableName": table_name,
+        "primaryKey": primary_key,           
         "columns": [
             {"name": k, "dataType": _dtype(v)}
             for k, v in first.items()
@@ -84,37 +115,81 @@ def schema_from_rows(rows):
 
     # create schemas for each connector
 def get_top_searches_schema():
-    return schema_from_rows(get_top_searches().get("searches", []))
+    return schema_from_rows(
+        get_top_searches().get("searches", []),
+        table_name="algolia_top_searches",
+        primary_key="search"                 
+    )
 
 def get_searches_count_schema():
-    return schema_from_rows(get_searches_count().get("dates", []))
+    return schema_from_rows(
+        get_searches_count().get("dates", []),
+        table_name="algolia_searches_count",
+        primary_key="date"
+    )
 
 def get_searches_no_results_schema():
-    return schema_from_rows(get_searches_no_results().get("searches", []))
+    return schema_from_rows(
+        get_searches_no_results().get("searches", []),
+        table_name="algolia_searches_no_results",
+        primary_key="search"
+    )
 
 def get_no_result_rate_schema():
-    return schema_from_rows(get_no_result_rate().get("dates", []))
+    return schema_from_rows(
+        get_no_result_rate().get("dates", []),
+        table_name="algolia_no_result_rate",
+        primary_key="date"
+    )
 
 def get_top_hits_schema():
-    return schema_from_rows(get_top_hits().get("hits", []))
+    return schema_from_rows(
+        get_top_hits().get("hits", []),
+        table_name="algolia_top_hits",
+        primary_key="hit"
+    )
 
 def get_searches_no_clicks_schema():
-    return schema_from_rows(get_searches_no_clicks().get("searches", []))
+    return schema_from_rows(
+        get_searches_no_clicks().get("searches", []),
+        table_name="algolia_searches_no_clicks",
+        primary_key="search"
+    )
 
 def get_click_through_rate_schema():
-    return schema_from_rows(get_click_through_rate().get("dates", []))
+    return schema_from_rows(
+        get_click_through_rate().get("dates", []),
+        table_name="algolia_click_through_rate",
+        primary_key="date"
+    )
 
 def get_users_count_schema():
-    return schema_from_rows(get_users_count().get("dates", []))
+    return schema_from_rows(
+        get_users_count().get("dates", []),
+        table_name="algolia_users_count",
+        primary_key="date"
+    )
 
 def get_top_countries_schema():
-    return schema_from_rows(get_top_countries().get("countries", []))
+    return schema_from_rows(
+        get_top_countries().get("countries", []),
+        table_name="algolia_top_countries",
+        primary_key="country"
+    )
 
 def get_click_positions_schema():
-    return schema_from_rows(get_click_positions().get("positions", []))
+    return schema_from_rows(
+        get_click_positions().get("positions", []),
+        table_name="algolia_click_positions",
+        primary_key="position"
+    )
 
 def get_top_filter_for_attributes_schema():
-    return schema_from_rows(get_top_filter_for_attributes().get("attributes", []))
+    return schema_from_rows(
+        get_top_filter_for_attributes().get("attributes", []),
+        table_name="algolia_top_filter_attributes",
+        primary_key="attribute"
+    )
 
 
 # Endpoints for index page
