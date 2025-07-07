@@ -2,15 +2,15 @@
 
 ## Description
 
-Returns the total number of searches performed per day.  
-This metric is useful for tracking search volume trends over time, measuring user engagement, and monitoring the impact of product changes or marketing campaigns.
+Returns the total number of searches per day over a selected time range.  
+This is a **time series metric**, meaning each entry includes a specific date and the number of searches executed on that day.
 
-## Field Description
+## Field description
 
-| Field     | Description                                 |
-|-----------|---------------------------------------------|
-| `date`    | The calendar date in `YYYY-MM-DD` format     |
-| `count`   | Total number of searches performed on that date |
+| Field     | Description                                                           |
+|-----------|-----------------------------------------------------------------------|
+| `date`    | Day on which the searches occurred (format: `YYYY-MM-DD`)            |
+| `count`   | Total number of search queries executed on that date (all users)     |
 
 
 ## Schema
@@ -28,18 +28,26 @@ This metric is useful for tracking search volume trends over time, measuring use
 
 ## How to Analyze
 
-You can use the `Search Count` metric to:
+The `Search Count` metric is key for tracking usage over time and identifying patterns in search activity:
 
-- **Plot search trends** over time (daily, weekly, rolling average)
-- **Identify spikes or drops** in usage
-- **Normalize other metrics** (e.g. clicks or conversions per 1,000 searches)
-- **Detect seasonal patterns** and correlate with campaigns, features, or events
+| Insight                    | Metric/Field | Description                                                     |
+|----------------------------|--------------|-----------------------------------------------------------------|
+| Search activity trend      | `count`      | Track total search volume across time                           |
+| Peak and low traffic days  | `count`      | Identify unusually high or low activity                         |
+| Growth monitoring          | `count`      | Compare volume week-over-week, month-over-month, etc.          |
+| Seasonal usage patterns    | `date`       | Visualize usage around events, campaigns, or holidays           |
+| Engagement correlation     | JOIN with `CTR`, `No Result Rate`, or `Users Count` | Contextualize engagement based on traffic volume  |
 
 
-## Related Metrics & Joins
+## Joinss
 
-| Related Metric                          | Join Key | Purpose                                        |
-|----------------------------------------|----------|------------------------------------------------|
-| [Click Through Rate](./click-through-rate.md) | `date`   | Compare search volume with engagement levels   |
-| [No Results](./no-results.md)                | `date`   | Monitor how many searches return zero results |
-| [User Count](./user-count.md)                | `date`   | Compare number of searches per active user    |
+`Search Count` can be joined with other time-based metrics using the `date` field:
+
+| Related Metric         | Join Key | Fields Available           | Purpose                                                   |
+|------------------------|----------|----------------------------|-----------------------------------------------------------|
+| `Click Through Rate`   | `date`   | `clickThroughRate`, `count`| Compare clicks to overall traffic                         |
+| `No Result Rate`       | `date`   | `rate`, `noResultCount`    | Understand failure rates in context of search volume      |
+| `Users Count`          | `date`   | `count`                    | Explore user activity relative to search frequency        |
+
+> `Search Count` **cannot** be joined directly with `Top Searches` or other search-level metrics because it does not include a `search` field.
+

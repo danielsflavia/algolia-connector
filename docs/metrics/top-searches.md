@@ -1,26 +1,28 @@
 # Top Searches
 
 ## Description
-Returns the most frequently executed search queries, including click and conversion metrics.
+
+Returns the most popular search queries for the selected time range.  
+If the **`clickAnalytics=true`** query parameter is set, the response additionally contains click and conversion metrics.
 
 ## Field description:
 
-| Field                  | Description                                                                 |
-|------------------------|-----------------------------------------------------------------------------|
-| `search`               | The raw search term entered by users                                        |
-| `count`                | Total number of times this search query was executed                        |
-| `nbHits`               | Total number of results (hits) returned for this query                      |
-| `averageClickPosition`| Mean position of the clicked result (e.g., 1st, 2nd, etc.)                   |
-| `clickCount`           | Number of times a user clicked on a result after this search                |
-| `clickPositions`       | List of clicked positions and how often each was clicked (stored as JSON)   |
-| `clickThroughRate`     | Share of tracked searches that led to a click (`clickCount / trackedSearchCount`) |
-| `conversionCount`      | Number of conversions attributed to this search                             |
-| `conversionRate`       | Share of tracked searches that led to a conversion                          |
-| `trackedSearchCount`   | Number of tracked searches (basis for CTR and conversion rate)              |
+| Field                    | Description                                                                                                   |
+|--------------------------|----------------------------------------------------------------------------------------------------------------|
+| `search`                 | Raw search term entered by users                                                                               |
+| `count`                  | Total number of times this query was executed (includes searches with `clickAnalytics=false`)                  |
+| `nbHits`                 | Average number of results (hits) returned for this query                                                       |
+| `averageClickPosition`   | Mean position of the clicked result (1 = first result)                                                         |
+| `clickCount`             | Number of clicks recorded for this query *(only if `clickAnalytics=true`)*                                     |
+| `clickPositions`         | JSON-encoded list of positions clicked and their click counts                                                  |
+| `clickThroughRate`       | `clickCount / trackedSearchCount` (CTR)                                                                        |
+| `conversionCount`        | Number of conversions recorded for this query *(requires conversion events in Algolia)*                        |
+| `conversionRate`         | `conversionCount / trackedSearchCount`                                                                         |
+| `trackedSearchCount`     | Number of searches where **`clickAnalytics=true`** (basis for CTR and conversion rate)                         |
 
-> **Note:**  
-> The field `clickPositions` contains a list of objects but is stored as a JSON string after processing.  
-> You can decode it using `json.loads(row["clickPositions"])`.
+> **Null vs. 0 %**  
+> * **`null`** rate → no `clickAnalytics=true` queries were tracked for this term.  
+> * **`0 %`** rate → queries were tracked, but no click or conversion events were received.
 
 ## Schema
 
@@ -45,22 +47,25 @@ Returns the most frequently executed search queries, including click and convers
 
 ## How to Analyze
 
-You can break down `Top Searches` by:
+This metric is useful for evaluating both query popularity and user engagement with results:
 
-- **Time**: Join or group by date using the `trackedSearchCount` from the [Click Through Rate](./click-through-rate.md) metric.
-- **Click Behavior**: Use `clickPositions` to understand where users clicked (e.g. top-ranked or buried results).
-- **Conversion Funnel**: Analyze `clickCount`, `clickThroughRate`, and `conversionRate` together to evaluate effectiveness.
-- **No-Result Overlay**: Cross-reference with the [No Results](./no-results.md) metric to check if a query is failing for some users.
+| Insight                           | Metric/Field                       | Description                                                                 |
+|----------------------------------|------------------------------------|-----------------------------------------------------------------------------|
+| Most popular searches            | `search`, `count`                  | Raw query volume                                                            |
+| Result volume                    | `nbHits`                           | Detect over-saturated (many hits) or under-supplied queries                |
+| Engagement with results          | `clickCount`, `clickThroughRate`  | Identify whether users click results after searching                       |
+| Click depth                      | `averageClickPosition`             | Detect how deep users scroll for clicks (lower = better relevance)         |
+| Conversion potential             | `conversionCount`, `conversionRate` | Evaluate which queries lead to actual conversions                        |
+| Behavior of high-volume queries  | JOIN with `Searches No Clicks` or `No Results` | Understand drop-off or failure points                                |
 
+## Joins
 
-## Related Metrics & Joins
+`Top Searches` can be joined with other search-level metrics using the `search` field as a common key:
 
-This metric can be joined with others using:
+| Related Metric           | Join Key | Fields Available                     | Purpose                                                             |
+|--------------------------|----------|--------------------------------------|---------------------------------------------------------------------|
+| `Searches No Results`    | `search` | `count`                              | Check which top searches return no results                          |
+| `Searches No Clicks`     | `search` | `count`                              | See which queries don't result in any clicks                        |
+| `Click Positions`        | `search` | `position`, `clickCount`             | Analyze which position(s) users clicked on for each search query   |
 
-| Join Target                    | Join Key   | Purpose                                               |
-|-------------------------------|------------|--------------------------------------------------------|
-| [Click Through Rate](./click-through-rate.md) | `search` | Combine CTR data by query                |
-| [No Results](./no-results.md)              | `search` | See if queries often lead to empty results  |
-| [Search Count](./search-count.md)          | `date`   | Add temporal search volume to query metrics |
-
-Use `.join()` in Polars or SQL-like environments to combine those metrics based on `search` or `date`.
+> `Top Searches` **cannot** be joined with time-based metrics like `Search Count`, `Click Through Rate`, or `Users Count` because it doesn't include a `date` field.
