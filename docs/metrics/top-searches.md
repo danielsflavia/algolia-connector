@@ -57,10 +57,10 @@ This metric is useful for evaluating both query popularity and user engagement w
 |----------------------------------|------------------------------------|-----------------------------------------------------------------------------|
 | Most popular searches            | `search`, `count`                  | Raw query volume                                                            |
 | Result volume                    | `nbHits`                           | Detect over-saturated (many hits) or under-supplied queries                |
-| Engagement with results          | `clickCount`, `clickThroughRate`  | Identify whether users click results after searching                       |
+| Engagement with results          | `clickCount`, `clickThroughRate`  | Identify whether users click results after searching                        |
 | Click depth                      | `averageClickPosition`             | Detect how deep users scroll for clicks (lower = better relevance)         |
-| Conversion potential             | `conversionCount`, `conversionRate` | Evaluate which queries lead to actual conversions                        |
-| Behavior of high-volume queries  | JOIN with `Searches No Clicks` or `No Results` | Understand drop-off or failure points                                |
+| Conversion potential             | `conversionCount`, `conversionRate` | Evaluate which queries lead to actual conversions                         |
+| Behavior of high-volume queries  | JOIN with `Searches No Clicks` or `No Results` | Understand drop-off or failure points                          |
 
 ## Joins
 
