@@ -30,6 +30,7 @@ Useful for identifying content gaps and opportunities to improve search relevanc
 ## How to Analyze
 
 | Insight                          | Metric             | Description                                                                 |
+|---------------------------------|---------------------|-----------------------------------------------------------------------------|
 | Identify unserved user intent   | `search`, `count`  | Most common queries that returned zero results                              |
 | Filter-induced result loss      | `withFilterCount`  | Spot where filters cause result suppression                                 |
 | Content gap diagnosis           | `search`           | Compare to indexed content or product data                                  |

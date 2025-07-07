@@ -15,5 +15,5 @@ python algolia_connector.py
 Server runs at: http://localhost:8000/
 
 - See the [Metrics Overview](./metrics-overview.md).
-- All available HTTP endpoints are listed in [Available Endpoints](.endpoints.md).
+- All available HTTP endpoints are listed in [Available Endpoints](./endpoints.md).
 - For detailed metric documentation, check the pages in [docs/metrics/](./metrics/).
