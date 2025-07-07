@@ -6,7 +6,8 @@ Returns individual search queries that resulted in **zero hits** during the sele
 Useful for identifying content gaps and opportunities to improve search relevance or indexing.
 
 The data for this metric can be retrieved using the `get_searches_no_results()` function  
-from [`algolia_connector.py`](../algolia_connector.py).
+from [`algolia_connector.py`](../../algolia_connector.py)
+
 
 ## Field description:
 
