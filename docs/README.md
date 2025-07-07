@@ -37,5 +37,5 @@ Server runs at: http://localhost:8000/
 | `/filter`                  | Top Filter Attributes            |
 | `/filter/schema`           | Schema for Filter Attributes     |
 
-Start with [Metrics Overview](./metrics-overview.md).
-Explore a specific metric in [docs/metrics/](./metrics).
+### Start with [Metrics Overview](./metrics-overview.md).
+### Explore a specific metric in [docs/metrics/](./metrics).
