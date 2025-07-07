@@ -1,12 +1,14 @@
 #  Algolia Connector Documentation
 
-Welcome to the documentation for the Algolia Analytics Connector.
+Welcome to the documentation for the **Algolia Analytics Connector**.
 
 This project provides:
-- A local HTTP server exposing live Algolia metrics
+- A local HTTP server exposing live [Algolia](https://www.algolia.com/) metrics
 - Structured schema generation for each metric
 - Polars-based data transformation
 - Ready-to-use analysis and insights
+
+> You'll need an [Algolia Analytics API key](https://www.algolia.com/doc/rest-api/analytics/#analytics-api-keys) and application ID to connect.
 
 To run locally:
 ```bash
