@@ -92,7 +92,7 @@ def schema_from_rows(
     *,
     table_name: str,
     primary_key: str | None = None,
-):
+    ):
     if not rows:
         return {
             "tableName": table_name,
