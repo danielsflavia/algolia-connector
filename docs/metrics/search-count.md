@@ -39,7 +39,7 @@ The `Search Count` metric is key for tracking usage over time and identifying pa
 | Engagement correlation     | JOIN with `CTR`, `No Result Rate`, or `Users Count` | Contextualize engagement based on traffic volume  |
 
 
-## Joinss
+## Joins
 
 `Search Count` can be joined with other time-based metrics using the `date` field:
 
