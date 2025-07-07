@@ -49,7 +49,7 @@ If the **`clickAnalytics=true`** query parameter is set, the response additional
 
 This metric is useful for evaluating both query popularity and user engagement with results:
 
-| Insight                           | Metric/Field                       | Description                                                                 |
+| Insight                           | Metric                           | Description                                                                 |
 |----------------------------------|------------------------------------|-----------------------------------------------------------------------------|
 | Most popular searches            | `search`, `count`                  | Raw query volume                                                            |
 | Result volume                    | `nbHits`                           | Detect over-saturated (many hits) or under-supplied queries                |
