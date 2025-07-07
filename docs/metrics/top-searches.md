@@ -3,7 +3,9 @@
 ## Description
 
 Returns the most popular search queries for the selected time range.  
-If the **`clickAnalytics=true`** query parameter is set, the response additionally contains click and conversion metrics.
+
+The data for this metric can be retrieved using the `get_top_searches()` function  
+from [`algolia_connector.py`](../algolia_connector.py).
 
 ## Field description:
 
@@ -20,9 +22,8 @@ If the **`clickAnalytics=true`** query parameter is set, the response additional
 | `conversionRate`         | `conversionCount / trackedSearchCount`                                                                         |
 | `trackedSearchCount`     | Number of searches where **`clickAnalytics=true`** (basis for CTR and conversion rate)                         |
 
-> **Null vs. 0 %**  
-> * **`null`** rate → no `clickAnalytics=true` queries were tracked for this term.  
-> * **`0 %`** rate → queries were tracked, but no click or conversion events were received.
+> **Requires** `clickAnalytics=true` in the API request to include click and conversion metrics such as `clickCount`, `conversionRate`, etc.
+
 
 ## Schema
 
@@ -44,6 +45,9 @@ If the **`clickAnalytics=true`** query parameter is set, the response additional
   ]
 }
 ```
+
+> Schema returned by `get_top_searches_schema()`, defined in [`algolia_connector.py`](../algolia_connector.py).
+
 
 ## How to Analyze
 

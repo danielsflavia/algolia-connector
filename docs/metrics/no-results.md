@@ -5,6 +5,9 @@
 Returns individual search queries that resulted in **zero hits** during the selected time range.  
 Useful for identifying content gaps and opportunities to improve search relevance or indexing.
 
+The data for this metric can be retrieved using the `get_searches_no_results()` function  
+from [`algolia_connector.py`](../algolia_connector.py).
+
 ## Field description:
 
 | Field               | Description                                                                 |
@@ -26,6 +29,8 @@ Useful for identifying content gaps and opportunities to improve search relevanc
   ]
 }
 ```
+
+> Schema returned by `get_searches_no_results_schema()`, defined in [`algolia_connector.py`](../algolia_connector.py).
 
 ## How to Analyze
 

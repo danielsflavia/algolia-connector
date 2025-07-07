@@ -5,9 +5,8 @@
 Returns the most clicked individual results across all tracked searches.  
 Each hit represents a clicked search result, including its unique identifier and click count.
 
-> **Note:**  
-> The `hit` value typically includes a document ID and a full URL or identifier string.  
-> The click count reflects how many times that result was clicked across all searches.
+The data for this metric can be retrieved using the `get_top_hits()` function  
+from [`algolia_connector.py`](../algolia_connector.py).
 
 ## Field Description
 
@@ -29,16 +28,16 @@ Each hit represents a clicked search result, including its unique identifier and
 }
 ```
 
+> Schema returned by `get_top_hits_schema()`,  defined in [`algolia_connector.py`](../algolia_connector.py).
+ 
 ## How to Analyze
 
 | Insight                      | Field      | Description                                                   |
 |-----------------------------|------------|---------------------------------------------------------------|
 | Most clicked documents      | `hit`      | Identify the most frequently clicked content or resources     |
 | Result popularity ranking   | `count`    | Sort by click count to evaluate what users engage with most   |
-| Click concentration         | —          | Assess whether a small number of hits dominate user clicks    |
 
 > You can use this metric to understand content engagement and popularity at the document or URL level.
-
 
 ## Joins
 
