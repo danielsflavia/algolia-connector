@@ -3,8 +3,6 @@
 This page lists all HTTP endpoints exposed by the Algolia Connector.  
 Each endpoint returns **raw data** or a **structured schema**, and links to a corresponding documentation page for context and analysis.
 
----
-
 ## Search Metrics
 
 | Endpoint                | Returns                           | Documentation                      |
@@ -18,7 +16,6 @@ Each endpoint returns **raw data** or a **structured schema**, and links to a co
 | `/norate`              | Daily no-result rate               | *not yet documented*                |
 | `/norate/schema`       | Schema for no-result rate          | —                                   |
 
----
 
 ## Click Metrics
 
@@ -31,7 +28,6 @@ Each endpoint returns **raw data** or a **structured schema**, and links to a co
 | `/clickthroughrate`    | Daily click-through rates              | *not yet documented*       |
 | `/clickthroughrate/schema` | Schema for CTR                   | —                          |
 
----
 
 ## User Metrics
 
@@ -42,7 +38,6 @@ Each endpoint returns **raw data** or a **structured schema**, and links to a co
 | `/countries`           | Top user countries                     | *not yet documented*       |
 | `/countries/schema`    | Schema for top countries               | —                          |
 
----
 
 ## Filter Usage
 
@@ -51,7 +46,5 @@ Each endpoint returns **raw data** or a **structured schema**, and links to a co
 | `/filter`              | Most used filters (by attribute)       | *not yet documented*       |
 | `/filter/schema`       | Schema for filter attributes           | —                          |
 
----
 
-### Tip  
-Use the `/schema` endpoints to inspect available fields, data types, and primary keys for joining metrics in Polars or SQL-like analysis.
+> Use the `/schema` endpoints to inspect available fields, data types, and primary keys for joining metrics in Polars or SQL-like analysis.
