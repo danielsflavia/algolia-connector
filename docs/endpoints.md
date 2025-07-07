@@ -5,48 +5,34 @@ Each endpoint returns **raw data** and a **structured schema**, and links to a c
 
 ## Search Metrics
 
-| Endpoint                | Returns                           | Documentation                      |
-|------------------------|------------------------------------|-------------------------------------|
-| `/top`                 | Most frequent search queries       | [Top Searches](./metrics/top-searches.md) |
-| `/top/schema`          | Schema for top searches            |                                     |
-| `/count`               | Search count over time             | [Search Count](./metrics/search-count.md) |
-| `/count/schema`        | Schema for search count            |                                    |
-| `/noresults`           | Searches with no results           | [No Results](./metrics/no-results.md) |
-| `/noresults/schema`    | Schema for no results              |                                    |
-| `/norate`              | Daily no-result rate               | [No Result Rate](./metrics/no-result-rate.md) |
-| `/norate/schema`       | Schema for no-result rate          |                                    |
-| `/hits`                | Most clicked search results        | [Top Hits](./metrics/top-hits.md)   |
-| `/hits/schema`         | Schema for top hits                |                                    |
+| Metric           | Endpoints                                   | Documentation                               |
+|------------------|---------------------------------------------|---------------------------------------------|
+| Top Searches     | [`/top`](#), [`/top/schema`](#)             | [Top Searches](./metrics/top-searches.md)   |
+| Search Count     | [`/count`](#), [`/count/schema`](#)         | [Search Count](./metrics/search-count.md)   |
+| No Results       | [`/noresults`](#), [`/noresults/schema`](#) | [No Results](./metrics/no-results.md)       |
+| No Result Rate   | [`/norate`](#), [`/norate/schema`](#)       | [No Result Rate](./metrics/no-result-rate.md) |
+| Top Hits         | [`/hits`](#), [`/hits/schema`](#)           | [Top Hits](./metrics/top-hits.md)           |
 
 
 ## Click Metrics
 
-| Endpoint                | Returns                               | Documentation             |
-|------------------------|----------------------------------------|----------------------------|
-| `/noclicks`            | Searches that didn't result in a click | *not yet documented*       |
-| `/noclicks/schema`     | Schema for no clicks                   |                           |
-| `/clickposition`       | Position of user clicks                | *not yet documented*       |
-| `/clickposition/schema`| Schema for click positions             |                           |
-| `/clickthroughrate`    | Daily click-through rates              | *not yet documented*       |
-| `/clickthroughrate/schema` | Schema for CTR                     |                           |
-
+| Metric               | Endpoints                                           | Documentation               |
+|----------------------|-----------------------------------------------------|------------------------------|
+| No Clicks            | [`/noclicks`](#), [`/noclicks/schema`](#)           | _Not yet documented_         |
+| Click Positions      | [`/clickposition`](#), [`/clickposition/schema`](#) | _Not yet documented_         |
+| Click Through Rate   | [`/clickthroughrate`](#), [`/clickthroughrate/schema`](#) | _Not yet documented_   |
 
 ## User Metrics
 
-| Endpoint                | Returns                               | Documentation             |
-|------------------------|----------------------------------------|----------------------------|
-| `/userscount`          | Unique user count per day              | *not yet documented*       |
-| `/userscount/schema`   | Schema for user count                  |                           |
-| `/countries`           | Top user countries                     | *not yet documented*       |
-| `/countries/schema`    | Schema for top countries               |                           |
-
+| Metric           | Endpoints                                       | Documentation               |
+|------------------|-------------------------------------------------|------------------------------|
+| Users Count      | [`/userscount`](#), [`/userscount/schema`](#)   | _Not yet documented_         |
+| Top Countries    | [`/countries`](#), [`/countries/schema`](#)     | _Not yet documented_         |
 
 ## Filter Usage
 
-| Endpoint                | Returns                               | Documentation             |
-|------------------------|----------------------------------------|----------------------------|
-| `/filter`              | Most used filters (by attribute)       | *not yet documented*       |
-| `/filter/schema`       | Schema for filter attributes           |                           |
-
+| Metric                 | Endpoints                                     | Documentation               |
+|------------------------|-----------------------------------------------|------------------------------|
+| Top Filter Attributes  | [`/filter`](#), [`/filter/schema`](#)         | _Not yet documented_         |
 
 > Use the `/schema` endpoints to inspect available fields, data types, and primary keys for joining metrics in Polars or SQL-like analysis.
