@@ -13,8 +13,10 @@ Each endpoint returns **raw data** or a **structured schema**, and links to a co
 | `/count/schema`        | Schema for search count            | —                                   |
 | `/noresults`           | Searches with no results           | [No Results](./metrics/no-results.md) |
 | `/noresults/schema`    | Schema for no results              | —                                   |
-| `/norate`              | Daily no-result rate               | *not yet documented*                |
+| `/norate`              | Daily no-result rate               | [No Result Rate](./metrics/no-result-rate.md) |
 | `/norate/schema`       | Schema for no-result rate          | —                                   |
+| `/hits`                | Most clicked search results        | [Top Hits](./metrics/top-hits.md)   |
+| `/hits/schema`         | Schema for top hits                | —                                   |
 
 
 ## Click Metrics
@@ -26,7 +28,7 @@ Each endpoint returns **raw data** or a **structured schema**, and links to a co
 | `/clickposition`       | Position of user clicks                | *not yet documented*       |
 | `/clickposition/schema`| Schema for click positions             | —                          |
 | `/clickthroughrate`    | Daily click-through rates              | *not yet documented*       |
-| `/clickthroughrate/schema` | Schema for CTR                   | —                          |
+| `/clickthroughrate/schema` | Schema for CTR                     | —                          |
 
 
 ## User Metrics

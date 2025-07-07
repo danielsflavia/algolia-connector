@@ -8,7 +8,7 @@ TYPE_MAP = {
     "float":   pl.Float64,
     "boolean": pl.Boolean,
     "date":    pl.Date,
-    "json":         pl.String,        # bleibt JSON
+    "json":         pl.String,       
     "list<int>":    pl.List(pl.Int64),
     "list<float>":  pl.List(pl.Float64),
     "list<string>": pl.List(pl.String),
