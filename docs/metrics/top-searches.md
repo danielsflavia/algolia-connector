@@ -41,3 +41,26 @@ Returns the most frequently executed search queries, including click and convers
     { "name": "trackedSearchCount",   "dataType": "integer" }
   ]
 }
+```
+
+## How to Analyze
+
+You can break down `Top Searches` by:
+
+- **Time**: Join or group by date using the `trackedSearchCount` from the [Click Through Rate](./click-through-rate.md) metric.
+- **Click Behavior**: Use `clickPositions` to understand where users clicked (e.g. top-ranked or buried results).
+- **Conversion Funnel**: Analyze `clickCount`, `clickThroughRate`, and `conversionRate` together to evaluate effectiveness.
+- **No-Result Overlay**: Cross-reference with the [No Results](./no-results.md) metric to check if a query is failing for some users.
+
+
+## Related Metrics & Joins
+
+This metric can be joined with others using:
+
+| Join Target                    | Join Key   | Purpose                                               |
+|-------------------------------|------------|--------------------------------------------------------|
+| [Click Through Rate](./click-through-rate.md) | `search` | Combine CTR data by query                |
+| [No Results](./no-results.md)              | `search` | See if queries often lead to empty results  |
+| [Search Count](./search-count.md)          | `date`   | Add temporal search volume to query metrics |
+
+Use `.join()` in Polars or SQL-like environments to combine those metrics based on `search` or `date`.

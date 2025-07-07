@@ -8,5 +8,5 @@ This project provides:
 - Polars-based data transformation
 - Ready-to-use analysis and insights
 
-Start with [Metrics Overview](./metrics-overview.md)  
+Start with [Metrics Overview](./metrics-overview.md).
 Explore a specific metric in [docs/metrics/](./metrics)
