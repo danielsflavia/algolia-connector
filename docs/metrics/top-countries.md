@@ -28,6 +28,8 @@ from [`algolia_connector.py`](../../algolia_connector.py).
 }
 ```
 
+> Schema returned by `get_top_countries_schema()`, defined in [`algolia_connector.py`](../../algolia_connector.py).
+
 ## How to Analyze
 
 This metric gives insights into where your users are located:

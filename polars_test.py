@@ -156,8 +156,8 @@ print("\nPercentage per Country: ", df_top_countries
       .sort("country_pecentage", descending = True))
 
 # Top filter attribtues
-top_filter_attributes_rows = get_top_filter_for_attributes()["attributes"]
-top_filter_attributes_schema = get_top_filter_for_attributes_schema()["columns"]
+top_filter_attributes_rows = get_top_filter_attributes()["attributes"]
+top_filter_attributes_schema = get_top_filter_attributes_schema()["columns"]
 df_top_filter_attributes = build_df(top_filter_attributes_rows, top_filter_attributes_schema)
 print("\nTop filter attributes: ", df_top_filter_attributes.sort("count", descending= True))
     # Percentage per filter attribute

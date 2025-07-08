@@ -57,7 +57,7 @@ def get_top_countries():
     return resp.to_dict()
 
 # Top filter for attribute
-def get_top_filter_for_attributes():
+def get_top_filter_attributes():
     resp = client.get_top_filter_attributes(index=INDEX)
     return resp.to_dict()
 
@@ -184,9 +184,9 @@ def get_click_positions_schema():
         primary_key="position"
     )
 
-def get_top_filter_for_attributes_schema():
+def get_top_filter_attributes_schema():
     return schema_from_rows(
-        get_top_filter_for_attributes().get("attributes", []),
+        get_top_filter_attributes().get("attributes", []),
         table_name="algolia_top_filter_attributes",
         primary_key="attribute"
     )
@@ -306,9 +306,9 @@ class Handler(BaseHTTPRequestHandler):
             case "/countries/schema":
                 self._send_json(get_top_countries_schema())
             case "/filter":
-                self._send_json(get_top_filter_for_attributes())
+                self._send_json(get_top_filter_attributes())
             case "/filter/schema":
-                self._send_json(get_top_filter_for_attributes_schema())    
+                self._send_json(get_top_filter_attributes_schema())    
             case _:
                 self.send_error(404, "Endpoint not found")
 
