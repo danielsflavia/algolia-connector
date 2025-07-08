@@ -10,17 +10,17 @@ Each endpoint returns **raw data** and a **structured schema**, and links to a c
 | Top Searches     | [`/top`](#), [`/top/schema`](#)             | [Top Searches](./metrics/top-searches.md)   |
 | Search Count     | [`/count`](#), [`/count/schema`](#)         | [Search Count](./metrics/search-count.md)   |
 | No Results       | [`/noresults`](#), [`/noresults/schema`](#) | [No Results](./metrics/no-results.md)       |
-| No Result Rate   | [`/norate`](#), [`/norate/schema`](#)       | [No Result Rate](./metrics/no-result-rate.md) |
+| No Result Rate   | [`/norate`](#), [`/norate/schema`](#)       | [No Result Rate](./metrics/no-result-rate.md)|
 | Top Hits         | [`/hits`](#), [`/hits/schema`](#)           | [Top Hits](./metrics/top-hits.md)           |
 
 
 ## Click Metrics
 
-| Metric               | Endpoints                                           | Documentation               |
-|----------------------|-----------------------------------------------------|------------------------------|
-| No Clicks            | [`/noclicks`](#), [`/noclicks/schema`](#)           | _Not yet documented_         |
-| Click Positions      | [`/clickposition`](#), [`/clickposition/schema`](#) | _Not yet documented_         |
-| Click Through Rate   | [`/clickthroughrate`](#), [`/clickthroughrate/schema`](#) | _Not yet documented_   |
+| Metric               | Endpoints                                           | Documentation                                              |
+|----------------------|-----------------------------------------------------|------------------------------------------------------------|
+| No Clicks            | [`/noclicks`](#), [`/noclicks/schema`](#)           |[No Clicks](./metrics/no-clicks.md)                         |
+| Click Positions      | [`/clickposition`](#), [`/clickposition/schema`](#) | [Click Positions](./metrics/click-position.md)             |
+| Click Through Rate   | [`/clickthroughrate`](#), [`/clickthroughrate/schema`](#)| [Click Through Rate](./metrics/click-through-rate.md) |
 
 ## User Metrics
 
