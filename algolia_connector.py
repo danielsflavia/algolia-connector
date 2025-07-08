@@ -234,9 +234,58 @@ class Handler(BaseHTTPRequestHandler):
 
     # Index page with links
     def _index(self):
-        links = "\n".join(
-            f'<a class="btn" href="{url}">{label}</a>' for url, label in ENDPOINTS
-        )
+        sectioned = {
+        "Search Metrics": [
+            ("/top", "Top Searches"),
+            ("/top/schema", "Schema"),
+            ("/count", "Search Count"),
+            ("/count/schema", "Schema"),
+            ("/noresults", "No Results"),
+            ("/noresults/schema", "Schema"),
+            ("/norate", "No Result Rate"),
+            ("/norate/schema", "Schema"),
+            ("/hits", "Top Hits"),
+            ("/hits/schema", "Schema"),
+        ],
+        "Click Metrics": [
+            ("/noclicks", "No Clicks"),
+            ("/noclicks/schema", "Schema"),
+            ("/clickposition", "Click Position"),
+            ("/clickposition/schema", "Schema"),
+            ("/clickthroughrate", "Click Through Rate"),
+            ("/clickthroughrate/schema", "Schema"),
+        ],
+        "User Metrics": [
+            ("/userscount", "User Count"),
+            ("/userscount/schema", "Schema"),
+            ("/countries", "Top Countries"),
+            ("/countries/schema", "Schema"),
+        ],
+        "Filter Metrics": [
+            ("/filter", "Top Filter Attributes"),
+            ("/filter/schema", "Schema"),
+        ]
+    }
+
+        sections_html = ""
+        for title, pairs in sectioned.items():
+            rows = ""
+            for i in range(0, len(pairs), 2):
+                left = pairs[i]
+                right = pairs[i+1] if i+1 < len(pairs) else ("#", "")
+                rows += f"""
+                    <tr>
+                        <td><a href="{left[0]}">{left[1]}</a></td>
+                        <td><a href="{right[0]}">{right[1]}</a></td>
+                    </tr>
+                """
+            sections_html += f"""
+                <h2>{title}</h2>
+                <table>
+                    {rows}
+                </table>
+            """
+
         return f"""
         <!doctype html>
         <html lang="en">
@@ -244,18 +293,46 @@ class Handler(BaseHTTPRequestHandler):
             <meta charset="utf-8">
             <title>Algolia Connector</title>
             <style>
-                body {{font-family: sans-serif; max-width: 600px; margin: 40px auto;}}
-                h1  {{text-align:center}}
-                .btn {{
-                    display:block; margin:8px 0; padding:10px 14px;
-                    border-radius:6px; text-align:center;
+                body {{
+                    font-family: sans-serif;
+                    max-width: 800px;
+                    margin: 40px auto;
+                    line-height: 1.6;
                 }}
-                .btn:hover {{background:#e0e0e0}}
+                h1 {{
+                    text-align: center;
+                }}
+                h2 {{
+                    margin-top: 2em;
+                    color: #333;
+                    border-bottom: 1px solid #ccc;
+                    padding-bottom: 0.3em;
+                }}
+                table {{
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 1.5em;
+                }}
+                td {{
+                    padding: 8px;
+                    border-bottom: 1px solid #eee;
+                }}
+                a {{
+                    display: inline-block;
+                    padding: 6px 10px;
+                    background: #f5f5f5;
+                    border-radius: 5px;
+                    text-decoration: none;
+                    color: #333;
+                }}
+                a:hover {{
+                    background: #ddd;
+                }}
             </style>
         </head>
         <body>
             <h1>Algolia Connector</h1>
-            {links}
+            {sections_html}
         </body>
         </html>
         """
