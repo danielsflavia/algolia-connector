@@ -24,14 +24,14 @@ Each endpoint returns **raw data** and a **structured schema**, and links to a c
 
 ## User Metrics
 
-| Metric           | Endpoints                                       | Documentation               |
+| Metric           | Endpoints                                       | Documentation                |
 |------------------|-------------------------------------------------|------------------------------|
 | Users Count      | [`/userscount`](#), [`/userscount/schema`](#)   | _Not yet documented_         |
 | Top Countries    | [`/countries`](#), [`/countries/schema`](#)     | _Not yet documented_         |
 
 ## Filter Usage
 
-| Metric                 | Endpoints                                     | Documentation               |
+| Metric                 | Endpoints                                     | Documentation                |
 |------------------------|-----------------------------------------------|------------------------------|
 | Top Filter Attributes  | [`/filter`](#), [`/filter/schema`](#)         | _Not yet documented_         |
 

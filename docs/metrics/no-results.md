@@ -9,7 +9,7 @@ The data for this metric can be retrieved using the `get_searches_no_results()` 
 from [`algolia_connector.py`](../../algolia_connector.py)
 
 
-## Field description:
+## Field Description
 
 | Field               | Description                                                                 |
 |---------------------|-----------------------------------------------------------------------------|

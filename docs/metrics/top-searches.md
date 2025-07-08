@@ -7,7 +7,7 @@ Returns the most popular search queries for the selected time range.
 The data for this metric can be retrieved using the `get_top_searches()` function  
 from [`algolia_connector.py`](../../algolia_connector.py).
 
-## Field description:
+## Field Description
 
 | Field                    | Description                                                                                                   |
 |--------------------------|----------------------------------------------------------------------------------------------------------------|

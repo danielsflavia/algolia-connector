@@ -8,7 +8,7 @@ This is a **time series metric**, meaning each entry includes a specific date an
 The data for this metric can be retrieved using the `get_searches_count()` function  
 from [`algolia_connector.py`](../../algolia_connector.py).
 
-## Field description
+## Field Description
 
 | Field     | Description                                                           |
 |-----------|-----------------------------------------------------------------------|
