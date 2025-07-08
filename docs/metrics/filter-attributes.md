@@ -13,8 +13,8 @@ from [`algolia_connector.py`](../../algolia_connector.py).
 
 | Field       | Description                                           |
 |-------------|-------------------------------------------------------|
-| `attribute` | Name of the filter attribute (facet)                 |
-| `count`     | Number of times this attribute was used as a filter  |
+| `attribute` | Name of the filter attribute (facet)                  |
+| `count`     | Number of times this attribute was used as a filter   |
 
 ## Schema
 
@@ -34,9 +34,9 @@ from [`algolia_connector.py`](../../algolia_connector.py).
 
 | Insight                        | Field       | Description                                                        |
 |--------------------------------|-------------|--------------------------------------------------------------------|
-| Most used filters              | `attribute` | See which filters users engage with most often                    |
-| Refinement popularity          | `count`     | Identify which attributes drive segmentation and refinement       |
-| Filter UI optimization         | `attribute` | Use top attributes to prioritize placement in the UI              |
+| Most used filters              | `attribute` | See which filters users engage with most often                     |
+| Refinement popularity          | `count`     | Identify which attributes drive segmentation and refinement        |
+| Filter UI optimization         | `attribute` | Use top attributes to prioritize placement in the UI               |
 
 ## Joins
 

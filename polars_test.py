@@ -163,4 +163,3 @@ print("\nTop filter attributes: ", df_top_filter_attributes.sort("count", descen
     # Percentage per filter attribute
 print("Percentage of Top filter Attributes: ")
 print(df_top_filter_attributes.with_columns(((pl.col("count")/pl.col("count").sum())*100).round(2).alias("percentage")))
-
