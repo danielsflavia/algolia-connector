@@ -24,15 +24,15 @@ Each endpoint returns **raw data** and a **structured schema**, and links to a c
 
 ## User Metrics
 
-| Metric           | Endpoints                                       | Documentation                |
-|------------------|-------------------------------------------------|------------------------------|
-| Users Count      | [`/userscount`](#), [`/userscount/schema`](#)   | _Not yet documented_         |
-| Top Countries    | [`/countries`](#), [`/countries/schema`](#)     | _Not yet documented_         |
+| Metric           | Endpoints                                       | Documentation                              |
+|------------------|-------------------------------------------------|--------------------------------------------|
+| Users Count      | [`/userscount`](#), [`/userscount/schema`](#)   | [User Count](./metrics/user-count.md)      |
+| Top Countries    | [`/countries`](#), [`/countries/schema`](#)     | [Top Countries](./metrics/top-countries.md)|
 
 ## Filter Usage
 
-| Metric                 | Endpoints                                     | Documentation                |
-|------------------------|-----------------------------------------------|------------------------------|
-| Top Filter Attributes  | [`/filter`](#), [`/filter/schema`](#)         | _Not yet documented_         |
+| Metric                 | Endpoints                                     | Documentation                                           |
+|------------------------|-----------------------------------------------|---------------------------------------------------------|
+| Top Filter Attributes  | [`/filter`](#), [`/filter/schema`](#)         | [Top Filter Attributes](./metrics/filter-attributes.md) |
 
 > Use the `/schema` endpoints to inspect available fields, data types, and primary keys for joining metrics in Polars or SQL-like analysis.
