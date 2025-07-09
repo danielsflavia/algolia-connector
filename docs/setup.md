@@ -32,4 +32,4 @@ To add your own metrics:
 3. Register the endpoint in the `ENDPOINTS` list
 4. Update the `Handler.do_GET()` to handle your new path
 
-Your new metric will now appear in the index UI and respond to HTTP requests.
+Your new metric will now appear in the index page and respond to HTTP requests.
