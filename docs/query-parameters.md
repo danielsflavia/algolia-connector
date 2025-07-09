@@ -10,8 +10,15 @@ These parameters can be passed to every endpoint to filter, segment, or paginate
 | `offset`    | int ≥ 0    | `offset=0`           | Pagination offset. |
 | `tags`      | string     | `tags=device:mobile%20phone` | Segment by tag (URL-encode AND/OR). |
 
-> If **no parameters** are provided, most endpoints default to showing data from the **last 7 days**.
-> Warning: If no data exists in the selected range, the result may be empty.
+
+If **no parameters** are provided, most endpoints default to showing data from the **last 7 days**.
+
+> Not all parameters are supported on every endpoint.  
+> For example, `limit` and `offset` only apply to endpoints like `/top`, `/hits`, or `/noclicks`.  
+> Some endpoints like `/noresults` or `/count` may ignore them entirely.
+
+> If no data exists in the selected range, the result may be empty or cause an error.
+
 
 ## Usage Examples
 
