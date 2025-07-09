@@ -17,6 +17,8 @@ If **no parameters** are provided, most endpoints default to showing data from t
 > For example, `limit` and `offset` only apply to endpoints like `/top`, `/hits`, or `/noclicks`.  
 > Some endpoints like `/noresults` or `/count` may ignore them entirely.
 
+See, full Algolia documentation: `https://www.algolia.com/doc/rest-api/analytics/`
+
 > If no data exists in the selected range, the result may be empty.
 
 
@@ -38,5 +40,3 @@ client.get_top_searches(
     tags="device:mobile phone"
 )
 ```
-
-Full Algolia documentation: `https://www.algolia.com/doc/rest-api/analytics/`

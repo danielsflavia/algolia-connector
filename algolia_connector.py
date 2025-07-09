@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from dotenv import load_dotenv
 import os, json
 from urllib.parse import urlparse, parse_qs
+import html, traceback
 
 
 # API Data from .env
@@ -228,6 +229,23 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(html.encode())
 
+    # Sends HTML error message when url throws error
+    def _send_error_html(self, exc: Exception, status: int = 500):
+        self.send_response(status)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.end_headers()
+
+        tb = traceback.format_exception_only(type(exc), exc)
+        msg = html.escape("".join(tb))
+        self.wfile.write(f"""
+            <h2>Request failed</h2>
+            <pre style="background:#f8f8f8;
+                        padding:12px;
+                        border:1px solid #ccc;
+                        border-radius:4px;">{msg}</pre>
+        """.encode())
+
+
     # Generates index page with links
     def _index(self):
         endpoints = {
@@ -339,57 +357,61 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
         route  = parsed.path.rstrip("/")
-        params = self._parse_query()    
-        match route:
-            case "":
-                self._send_html(self._index())
-            case "/top":
-                self._send_json(
-                    client.get_top_searches(index=INDEX, click_analytics=True, **params).to_dict())
-            case "/top/schema":
-                self._send_json(get_top_searches_schema())
-            case "/count":
-                self._send_json(client.get_searches_count(index=INDEX, **params).to_dict())
-            case "/count/schema":
-                self._send_json(get_searches_count_schema())
-            case "/noresults":
-                self._send_json(client.get_searches_no_results(index=INDEX, **params).to_dict())
-            case "/noresults/schema":
-                self._send_json(get_searches_no_results_schema())
-            case "/norate":
-                self._send_json(client.get_no_results_rate(index=INDEX, **params).to_dict())
-            case "/norate/schema":
-                self._send_json(get_no_result_rate_schema())
-            case "/hits":
-                self._send_json(client.get_top_hits(index=INDEX, **params).to_dict())
-            case "/hits/schema":
-                self._send_json(get_top_hits_schema())
-            case "/noclicks":
-                self._send_json(client.get_searches_no_clicks(index=INDEX, **params).to_dict())
-            case "/noclicks/schema":
-                self._send_json(get_searches_no_clicks_schema())
-            case "/clickposition":
-                self._send_json(client.get_click_positions(index=INDEX, **params).to_dict())
-            case "/clickposition/schema":
-                self._send_json(get_click_positions_schema())
-            case "/clickthroughrate":
-                self._send_json(client.get_click_through_rate(index=INDEX, **params).to_dict())
-            case "/clickthroughrate/schema":
-                self._send_json(get_click_through_rate_schema())
-            case "/userscount":
-                self._send_json(client.get_users_count(index=INDEX, **params).to_dict())
-            case "/userscount/schema":
-                self._send_json(get_users_count_schema())
-            case "/countries":
-                self._send_json(client.get_top_countries(index=INDEX, **params).to_dict())
-            case "/countries/schema":
-                self._send_json(get_top_countries_schema())
-            case "/filter":
-                self._send_json(client.get_top_filter_attributes(index=INDEX, **params).to_dict())
-            case "/filter/schema":
-                self._send_json(get_top_filter_attributes_schema())    
-            case _:
-                self.send_error(404, "Endpoint not found")
+        params = self._parse_query()  
+        try:  
+            match route:
+                case "":
+                    self._send_html(self._index())
+                case "/top":
+                    self._send_json(
+                        client.get_top_searches(index=INDEX, click_analytics=True, **params).to_dict())
+                case "/top/schema":
+                    self._send_json(get_top_searches_schema())
+                case "/count":
+                    self._send_json(client.get_searches_count(index=INDEX, **params).to_dict())
+                case "/count/schema":
+                    self._send_json(get_searches_count_schema())
+                case "/noresults":
+                    self._send_json(client.get_searches_no_results(index=INDEX, **params).to_dict())
+                case "/noresults/schema":
+                    self._send_json(get_searches_no_results_schema())
+                case "/norate":
+                    self._send_json(client.get_no_results_rate(index=INDEX, **params).to_dict())
+                case "/norate/schema":
+                    self._send_json(get_no_result_rate_schema())
+                case "/hits":
+                    self._send_json(client.get_top_hits(index=INDEX, **params).to_dict())
+                case "/hits/schema":
+                    self._send_json(get_top_hits_schema())
+                case "/noclicks":
+                    self._send_json(client.get_searches_no_clicks(index=INDEX, **params).to_dict())
+                case "/noclicks/schema":
+                    self._send_json(get_searches_no_clicks_schema())
+                case "/clickposition":
+                    self._send_json(client.get_click_positions(index=INDEX, **params).to_dict())
+                case "/clickposition/schema":
+                    self._send_json(get_click_positions_schema())
+                case "/clickthroughrate":
+                    self._send_json(client.get_click_through_rate(index=INDEX, **params).to_dict())
+                case "/clickthroughrate/schema":
+                    self._send_json(get_click_through_rate_schema())
+                case "/userscount":
+                    self._send_json(client.get_users_count(index=INDEX, **params).to_dict())
+                case "/userscount/schema":
+                    self._send_json(get_users_count_schema())
+                case "/countries":
+                    self._send_json(client.get_top_countries(index=INDEX, **params).to_dict())
+                case "/countries/schema":
+                    self._send_json(get_top_countries_schema())
+                case "/filter":
+                    self._send_json(client.get_top_filter_attributes(index=INDEX, **params).to_dict())
+                case "/filter/schema":
+                    self._send_json(get_top_filter_attributes_schema())    
+                case _:
+                    raise ValueError(f"Unknown endpoint: {route}")
+
+        except Exception as e:
+            self._send_error_html(e)
 
 def main():
     server = HTTPServer(("localhost", 8000), Handler)
