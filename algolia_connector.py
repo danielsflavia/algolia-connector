@@ -64,7 +64,7 @@ def get_top_filter_attributes():
 
 
 
-# Data Types for creating Schemna
+# Infers the data type of a given value for schema description
 def _dtype(value):
     if isinstance(value, bool):   return "boolean"
     if isinstance(value, int):    return "integer"
@@ -82,14 +82,14 @@ def _dtype(value):
         return "json"                     
     return "unknown"
 
-# Guessing primary key for Schema
+# Attempts to guess a typical primary key field from a sample row
 def _guess_primary_key(sample_row):
     for cand in ("id", "objectID", "uid", "uuid", "pk"):
         if cand in sample_row:
             return cand
     return None 
 
-# Creating Schema 
+# Builds a schema dictionary from a list of row dictionaries
 def schema_from_rows(
     rows: list[dict],
     *,
@@ -116,7 +116,7 @@ def schema_from_rows(
         ]
     }
 
-    # create schemas for each connector
+    # Create schemas for each connector
 def get_top_searches_schema():
     return schema_from_rows(
         get_top_searches().get("searches", []),
@@ -194,12 +194,13 @@ def get_top_filter_attributes_schema():
         primary_key="attribute"
     )
 
+# HTTP Request Handler class
 class Handler(BaseHTTPRequestHandler):
-    # for query usage in http browser
+    # Parses the query parameter from the url 
     def _parse_query(self):
         qs = parse_qs(urlparse(self.path).query)
 
-        MAP = {     # camelCase → snake_case
+        MAP = {     # From camelCase to snake_case for searches
             "startDate": "start_date",
             "endDate":   "end_date",
             "limit":     "limit",
@@ -213,19 +214,21 @@ class Handler(BaseHTTPRequestHandler):
                 out[snake] = int(val) if snake in {"limit", "offset"} else val
         return out
     
+    # Sends JSON-Object as HTTP answer
     def _send_json(self, obj):
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
         self.wfile.write(json.dumps(obj, indent=2).encode())
 
+    # Sends HTML
     def _send_html(self, html):
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
         self.wfile.write(html.encode())
 
-    # Index page with links
+    # Generates index page with links
     def _index(self):
         endpoints = {
         "Search Metrics": [
@@ -330,6 +333,9 @@ class Handler(BaseHTTPRequestHandler):
         </html>
         """
 
+# Handles all incoming GET requests to the local HTTP server
+    # Routes to metric or schema endpoints
+    # Parses query parameters (e.g. startDate, limit)
     def do_GET(self):
         parsed = urlparse(self.path)
         route  = parsed.path.rstrip("/")
@@ -387,12 +393,16 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     server = HTTPServer(("localhost", 8000), Handler)
+    # Startup message
+    print("Algolia Connector running at http://localhost:8000")
+    print("Press Ctrl-C to stop\n")
+
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nServer wurde per Strg+C gestoppt")
+        print("\nServer wurde per CTRL+C gestoppt")
     finally:
-        server.server_close()   # Port gets free
+        server.server_close()   # Port is free
 
 if __name__ == "__main__":
     main()
