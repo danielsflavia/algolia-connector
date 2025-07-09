@@ -29,7 +29,7 @@ To add your own metrics:
 
 1. Define a new function in `algolia_connector.py`
 2. Add a corresponding schema function 
-3. Register the endpoint in the `ENDPOINTS` list
+3. Register the endpoint in the `endpoints` list
 4. Update the `Handler.do_GET()` to handle your new path
 
 Your new metric will now appear in the index page and respond to HTTP requests.

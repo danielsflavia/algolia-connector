@@ -64,7 +64,7 @@ def get_top_filter_attributes():
 
 
 
-# Data Types and Schema function
+# Data Types for creating Schemna
 def _dtype(value):
     if isinstance(value, bool):   return "boolean"
     if isinstance(value, int):    return "integer"
@@ -82,12 +82,14 @@ def _dtype(value):
         return "json"                     
     return "unknown"
 
+# Guessing primary key for Schema
 def _guess_primary_key(sample_row):
     for cand in ("id", "objectID", "uid", "uuid", "pk"):
         if cand in sample_row:
             return cand
     return None 
 
+# Creating Schema 
 def schema_from_rows(
     rows: list[dict],
     *,
@@ -192,33 +194,6 @@ def get_top_filter_attributes_schema():
         primary_key="attribute"
     )
 
-
-# Endpoints for index page
-ENDPOINTS = [
-    ("/top",                      "Top Searches"),
-    ("/top/schema",               "Top Searches (Schema)"),
-    ("/count",                     "Search Count"),
-    ("/count/schema",              "Search Count (Schema)"),
-    ("/noresults",                 "No Results"),
-    ("/noresults/schema",          "No Results (Schema)"),
-    ("/norate",                    "No Result Rate"),
-    ("/norate/schema",             "No Result Rate (Schema)"),
-    ("/hits",                      "Top Hits"),
-    ("/hits/schema",               "Top Hits (Schema)"),
-    ("/noclicks",                  "No Clicks"),
-    ("/noclicks/schema",           "No Clicks (Schema)"),
-    ("/clickposition",             "Click Position"),
-    ("/clickposition/schema",      "Click position (Schema)"),
-    ("/clickthroughrate",          "Click Through Rate"),
-    ("/clickthroughrate/schema",   "Click Through Rate (Schema)"),
-    ("/userscount",                "Number of Users"),
-    ("/userscount/schema",         "Number of Users (Schema)"),
-    ("/countries",                 "Top Countries"),
-    ("/countries/schema",          "Top Countries (Schema)"),
-    ("/filter",                    "Top Filter Attributes"),
-    ("/filter/schema",             "Top Filter Attributes (Schema)")
-]
-
 class Handler(BaseHTTPRequestHandler):
     # for query usage in http browser
     def _parse_query(self):
@@ -252,7 +227,7 @@ class Handler(BaseHTTPRequestHandler):
 
     # Index page with links
     def _index(self):
-        sectioned = {
+        endpoints = {
         "Search Metrics": [
             ("/top", "Top Searches"),
             ("/top/schema", "Schema"),
@@ -286,7 +261,7 @@ class Handler(BaseHTTPRequestHandler):
     }
 
         sections_html = ""
-        for title, pairs in sectioned.items():
+        for title, pairs in endpoints.items():
             rows = ""
             for i in range(0, len(pairs), 2):
                 left = pairs[i]
