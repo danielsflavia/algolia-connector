@@ -24,11 +24,6 @@ It offers both a JSON API and a simple HTML index page, along with a Polars-base
 3. Configure your environment
     ```bash
     cp .env.example .env
-    # then add:
-    # ALGOLIA_APP_ID=yourAppID
-    # ALGOLIA_ANALYTICS_KEY=yourAnalyticsKey
-    # ALGOLIA_REGION=yourRegion
-    # INDEX_NAME=your_index
     ```
 4. Start the server
     ```bash

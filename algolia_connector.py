@@ -2,6 +2,7 @@ from algoliasearch.analytics.client import AnalyticsClientSync
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from dotenv import load_dotenv
 import os, json
+from urllib.parse import urlparse, parse_qs
 
 
 # API Data from .env
@@ -218,8 +219,25 @@ ENDPOINTS = [
     ("/filter/schema",             "Top Filter Attributes (Schema)")
 ]
 
-
 class Handler(BaseHTTPRequestHandler):
+    # for query usage in http browser
+    def _parse_query(self):
+        qs = parse_qs(urlparse(self.path).query)
+
+        MAP = {     # camelCase → snake_case
+            "startDate": "start_date",
+            "endDate":   "end_date",
+            "limit":     "limit",
+            "offset":    "offset",
+            "tags":      "tags",
+        }
+        out = {}
+        for camel, snake in MAP.items():
+            if camel in qs:
+                val = qs[camel][0]
+                out[snake] = int(val) if snake in {"limit", "offset"} else val
+        return out
+    
     def _send_json(self, obj):
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
@@ -338,52 +356,55 @@ class Handler(BaseHTTPRequestHandler):
         """
 
     def do_GET(self):
-        route = self.path.rstrip("/")
+        parsed = urlparse(self.path)
+        route  = parsed.path.rstrip("/")
+        params = self._parse_query()    
         match route:
             case "":
                 self._send_html(self._index())
             case "/top":
-                self._send_json(get_top_searches())
+                self._send_json(
+                    client.get_top_searches(index=INDEX, click_analytics=True, **params).to_dict())
             case "/top/schema":
                 self._send_json(get_top_searches_schema())
             case "/count":
-                self._send_json(get_searches_count())
+                self._send_json(client.get_searches_count(index=INDEX, **params).to_dict())
             case "/count/schema":
                 self._send_json(get_searches_count_schema())
             case "/noresults":
-                self._send_json(get_searches_no_results())
+                self._send_json(client.get_searches_no_results(index=INDEX, **params).to_dict())
             case "/noresults/schema":
                 self._send_json(get_searches_no_results_schema())
             case "/norate":
-                self._send_json(get_no_result_rate())
+                self._send_json(client.get_no_results_rate(index=INDEX, **params).to_dict())
             case "/norate/schema":
                 self._send_json(get_no_result_rate_schema())
             case "/hits":
-                self._send_json(get_top_hits())
+                self._send_json(client.get_top_hits(index=INDEX, **params).to_dict())
             case "/hits/schema":
                 self._send_json(get_top_hits_schema())
             case "/noclicks":
-                self._send_json(get_searches_no_clicks())
+                self._send_json(client.get_searches_no_clicks(index=INDEX, **params).to_dict())
             case "/noclicks/schema":
                 self._send_json(get_searches_no_clicks_schema())
             case "/clickposition":
-                self._send_json(get_click_positions())
+                self._send_json(client.get_click_positions(index=INDEX, **params).to_dict())
             case "/clickposition/schema":
                 self._send_json(get_click_positions_schema())
             case "/clickthroughrate":
-                self._send_json(get_click_through_rate())
+                self._send_json(client.get_click_through_rate(index=INDEX, **params).to_dict())
             case "/clickthroughrate/schema":
                 self._send_json(get_click_through_rate_schema())
             case "/userscount":
-                self._send_json(get_users_count())
+                self._send_json(client.get_users_count(index=INDEX, **params).to_dict())
             case "/userscount/schema":
                 self._send_json(get_users_count_schema())
             case "/countries":
-                self._send_json(get_top_countries())
+                self._send_json(client.get_top_countries(index=INDEX, **params).to_dict())
             case "/countries/schema":
                 self._send_json(get_top_countries_schema())
             case "/filter":
-                self._send_json(get_top_filter_attributes())
+                self._send_json(client.get_top_filter_attributes(index=INDEX, **params).to_dict())
             case "/filter/schema":
                 self._send_json(get_top_filter_attributes_schema())    
             case _:

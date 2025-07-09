@@ -1,38 +1,29 @@
-# Project Overview & Usage
+# Project Usage
 
-This page expands on the quickstart from the README.  
-After setting up the server, here’s how the project is structured and how to work with it.
+This guide shows how to use the Algolia Analytics Connector after setup and how to explore, extend, or build your own metrics.
 
-## Local Server
+## Documentation Overview
 
-Once the server is running, you can:
+Once the server is running (`python algolia_connector.py`), open:
 
-- Open [`http://localhost:8000`](http://localhost:8000) to see the metric UI
-- Click on any route to see JSON output
-- Append `/schema` to any route to get the data schema
+**➡ http://localhost:8000**
 
-## Metric Categories
-
-| Category      | Example Endpoints             |
-|---------------|-------------------------------|
-| Search        | `/top`, `/count`, `/noresults` |
-| Clicks        | `/clickposition`, `/noclicks` |
-| Users         | `/userscount`, `/countries`   |
-
-See full list in [`docs/metric-endpoints.md`](./metric-endpoints.md)
+You'll see categorized metric links and schema endpoints.  
+For a full overview of all available routes, see:  
+[`docs/metric-endpoints.md`](./metric-endpoints.md)
 
 ## Exploring with Polars
 
 The script [`polars_test.py`](../polars_test.py) lets you load, clean, and analyze the data using Polars.
 
-Examples include:
+Example use cases:
 
 - Top search terms
 - Click position analysis
 - No-result rate breakdown
 - CTR calculation
 
-## Extending the Connector
+## Adding Your Own Metrics
 
 To add your own metrics:
 
@@ -41,4 +32,4 @@ To add your own metrics:
 3. Register the endpoint in the `ENDPOINTS` list
 4. Update the `Handler.do_GET()` to handle your new path
 
-This approach keeps logic and UI fully decoupled and easy to maintain.
+Your new metric will now appear in the index UI and respond to HTTP requests.
