@@ -38,3 +38,15 @@ It offers both a JSON API and a simple HTML index page, along with a Polars-base
 | Metric Endpoints (Übersicht)  | [`docs/metric-endpoints.md`](./docs/metric-endpoints.md)           |
 | In-depth Metrics              | [`docs/metrics/`](./docs/metrics/)                                 |
 | Polars Analysis Example       | [`polars_test.py`](./polars_test.py)                               |
+
+## Query Parameters (Optional Filters)
+
+All endpoints support optional query parameters:
+
+- `startDate`: Start of range (e.g. `2024-07-01`)
+- `endDate`: End of range (e.g. `2024-07-08`)
+- `limit`: Max number of items (default: 10)
+- `offset`: Pagination offset
+- `tags`: Filter using metadata (e.g. `tags=device:mobile phone`)
+
+See full query guide → [`docs/query-parameters.md`](./docs/query-parameters.md)
