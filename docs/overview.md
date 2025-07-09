@@ -11,7 +11,7 @@ Once the server is running (`python algolia_connector.py`), open:
 You will see categorized metric links and schema endpoints that can be explored directly in the browser.  
 These cover a **default selection of endpoints and filters**.
 
-See [`docs/query-parameters.md`](./docs/query-parameters.md) for a list of all available filters (`startDate`, `endDate`, `tags`, etc.).
+See [`docs/query-parameters.md`](./query-parameters.md) for a list of all available filters (`startDate`, `endDate`, `tags`, etc.).
 
 ## Exploring with Polars
 
@@ -24,4 +24,4 @@ With it, you can:
 - Filter, group, and transform the data
 - Create custom KPIs directly in Polars
 
-See [`docs/metric-endpoints.md`](./docs/metric-endpoints.md) to learn which tables are available and which fields you can combine.
+See [`docs/metric-endpoints.md`](./metric-endpoints.md) to learn which tables are available and which fields you can combine.

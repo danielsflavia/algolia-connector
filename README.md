@@ -34,8 +34,8 @@ It offers both a JSON API and a simple HTML index page, along with a Polars-base
 
 | Thema                         | Link                                                               |
 |-------------------------------|--------------------------------------------------------------------|
-| Setup & Configuration         | [`docs/setup.md`](./docs/setup.md)                                 |
-| Metric Endpoints (Übersicht)  | [`docs/metric-endpoints.md`](./docs/metric-endpoints.md)           |
+| Overview for Analysis         | [`docs/overview.md`](./docs/overview.md)                                 |
+| Metric Endpoints              | [`docs/metric-endpoints.md`](./docs/metric-endpoints.md)           |
 | In-depth Metrics              | [`docs/metrics/`](./docs/metrics/)                                 |
 | Polars Analysis Example       | [`polars_test.py`](./polars_test.py)                               |
 
