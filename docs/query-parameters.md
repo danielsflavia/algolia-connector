@@ -19,9 +19,6 @@ If **no parameters** are provided, most endpoints default to showing data from t
 
 See, full Algolia documentation: `https://www.algolia.com/doc/rest-api/analytics/`
 
-> If no data exists in the selected range, the result may be empty.
-
-
 ## Usage Examples
 
 ### 1. In the Browser
@@ -40,3 +37,5 @@ client.get_top_searches(
     tags="device:mobile phone"
 )
 ```
+
+> If no data exists in the selected range, the result may be empty or result in error.

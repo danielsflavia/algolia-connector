@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os, json
 from urllib.parse import urlparse, parse_qs
 import html, traceback
-
+from pydantic import ValidationError  
 
 # API Data from .env
 load_dotenv()
@@ -25,8 +25,10 @@ def get_searches_count():
     return resp.to_dict()
 
 def get_searches_no_results():
-    resp = client.get_searches_no_results(index=INDEX)
-    return resp.to_dict()
+    try:
+        return client.get_searches_no_results(index=INDEX).to_dict()
+    except ValidationError:
+        return {"searches": [], "count": 0}
 
 def get_no_result_rate():
     resp = client.get_no_results_rate(index=INDEX)
@@ -235,8 +237,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
 
-        tb = traceback.format_exception_only(type(exc), exc)
-        msg = html.escape("".join(tb))
+        tb = traceback.format_exception_only(type(exc), exc) # Get short tarceback for Exception
+        msg = html.escape("".join(tb))  # Change for HTML 
         self.wfile.write(f"""
             <h2>Request failed</h2>
             <pre style="background:#f8f8f8;

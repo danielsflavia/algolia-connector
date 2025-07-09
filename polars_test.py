@@ -30,9 +30,20 @@ def schema_to_polars(schema_cols: list[dict]) -> dict:
     return {c["name"]: TYPE_MAP.get(c["dataType"], pl.String) for c in schema_cols}
 
 # Cleans rows and builds a Polars DataFrame 
-def build_df(rows, schema_cols):
-    return pl.from_dicts(clean_rows(rows), schema=schema_to_polars(schema_cols))
+def build_df(rows: list[dict], schema_cols: list[dict]) -> pl.DataFrame:
+    if rows:                      # if there is data
+        return pl.from_dicts(
+            clean_rows(rows),
+            schema=schema_to_polars(schema_cols)   
+        )
 
+    # Fallback: empty df with all columns
+    schema = schema_to_polars(schema_cols)
+    empty_series = {
+        name: pl.Series(name=name, values=[], dtype=dtype)
+        for name, dtype in schema.items()
+    }
+    return pl.DataFrame(empty_series)
 
 # ---- Pull data from algolia_connector ---
 
@@ -61,8 +72,6 @@ searches_no_results_schema = get_searches_no_results_schema()["columns"]
 df_searches_no_results = build_df(searches_no_results_rows, searches_no_results_schema)
 print("\nSearches no results: ")
 print(df_searches_no_results)
-    # Top 10 searches result
-print("\nTop 10 searches no result: ", df_searches_no_results.sort("count", descending=True).head(10))
 
 # No result rate
 no_result_rate_rows = get_no_result_rate()["dates"]
