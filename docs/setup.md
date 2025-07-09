@@ -6,7 +6,7 @@ This guide shows how to use the Algolia Analytics Connector after setup and how 
 
 Once the server is running (`python algolia_connector.py`), open:
 
-**➡ http://localhost:8000**
+**http://localhost:8000**
 
 You'll see categorized metric links and schema endpoints.  
 For a full overview of all available routes, see:  
