@@ -34,11 +34,11 @@ from [`algolia_connector.py`](../../algolia_connector.py).
 Click Positions reveal how deep users scroll in search results before clicking:
 
 | Insight                         | Metric/Field   | Description                                                              |
-|----------------------------------|----------------|--------------------------------------------------------------------------|
+|----------------------------------|----------------|-------------------------------------------------------------------------|
 | User scroll depth               | `position`     | Analyze the index positions where users tend to click                    |
 | Result relevance                | `position`     | More clicks on top positions suggest good relevance ranking              |
 | Engagement hotspots             | `clickCount`   | Identify which result positions get the most interaction                 |
-| Interaction distribution        | `clickCount` + `position` | Build a histogram of click behavior across result ranks         |
+| Interaction distribution        | `clickCount` + `position` | Build a histogram of click behavior across result ranks       |
 | Outlier patterns                | `position`     | Detect when users frequently click deep in the result list               |
 
 ## Joins
